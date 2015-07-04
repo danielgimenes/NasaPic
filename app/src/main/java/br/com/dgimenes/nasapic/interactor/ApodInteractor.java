@@ -27,8 +27,6 @@ public class ApodInteractor {
             @Override
             public void success(ApodDTO apodDTO, Response response) {
                 onFinishListener.onSuccess(apodDTO.getUrl());
-
-                //onFinishListener.onSuccess("https://api.nasa.gov/images/apod.jpg");
             }
 
             @Override

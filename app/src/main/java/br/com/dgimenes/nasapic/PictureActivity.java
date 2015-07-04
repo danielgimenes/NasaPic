@@ -1,18 +1,24 @@
 package br.com.dgimenes.nasapic;
 
+import android.app.AlertDialog;
 import android.app.WallpaperManager;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -31,7 +37,7 @@ public class PictureActivity extends ActionBarActivity {
 
     private ImageView previewImageView;
     private Button setWallpaperButton;
-    private Bitmap apodBitmap;
+    private TextView titleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class PictureActivity extends ActionBarActivity {
                 try {
                     WallpaperManager wallpaperMgr = WallpaperManager.getInstance(PictureActivity.this);
                     wallpaperMgr.setWallpaperOffsetSteps(0.5f, 1.0f);
-                    wallpaperMgr.setBitmap(apodBitmap);
+                    wallpaperMgr.setBitmap(((BitmapDrawable) previewImageView.getDrawable()).getBitmap());
                     displayMessageFromStringRes(R.string.wallpaper_set);
                 } catch (IOException e) {
                     displayMessageFromStringRes(R.string.error_setting_wallpaper);
@@ -60,6 +66,10 @@ public class PictureActivity extends ActionBarActivity {
                 }
             }
         });
+
+        titleTextView = (TextView) findViewById(R.id.title_text);
+        titleTextView.setText(Html.fromHtml(getResources().getString(R.string.picture_screen_title)));
+        titleTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void loadNasaAPOD() {
@@ -79,29 +89,12 @@ public class PictureActivity extends ActionBarActivity {
     }
 
     private void downloadAndSetPicture(String pictureUrl) {
-        new AsyncTask<String, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(String... params) {
-                try {
-                    Display display = getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    display.getSize(size);
-                    int ideal_height = size.y;
-                    apodBitmap = picasso.load(params[0]).placeholder(R.drawable.loading)
-                            .resize(0, ideal_height).get();
-                } catch (IOException e) {
-                    displayMessageFromStringRes(R.string.error_downloading_apod);
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                PictureActivity.this.previewImageView.setImageBitmap(apodBitmap);
-            }
-        }.execute(pictureUrl);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int ideal_height = size.y;
+        picasso.load(pictureUrl).placeholder(R.drawable.loading).resize(0, ideal_height)
+                .into(previewImageView);
     }
 
     private void setupPicasso() {
@@ -118,20 +111,26 @@ public class PictureActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_picture, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.about_message)
+                    .setTitle(R.string.action_about);
+            builder.setNeutralButton(getResources().getString(R.string.about_close_button),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
             return true;
         }
 
