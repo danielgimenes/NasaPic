@@ -3,11 +3,10 @@ package br.com.dgimenes.nasapic;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -27,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.interactor.OnFinishListener;
 
@@ -38,6 +38,7 @@ public class PictureActivity extends ActionBarActivity {
     private ImageView previewImageView;
     private Button setWallpaperButton;
     private TextView titleTextView;
+    private TextView errorMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +71,12 @@ public class PictureActivity extends ActionBarActivity {
         titleTextView = (TextView) findViewById(R.id.title_text);
         titleTextView.setText(Html.fromHtml(getResources().getString(R.string.picture_screen_title)));
         titleTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        errorMessageTextView = (TextView) findViewById(R.id.error_message);
     }
 
     private void loadNasaAPOD() {
-        new ApodInteractor().getNasaApodURI(new OnFinishListener<String>() {
+        new ApodInteractor().getNasaApodPictureURI(new OnFinishListener<String>() {
 
             @Override
             public void onSuccess(String pictureUrl) {
@@ -82,13 +85,24 @@ public class PictureActivity extends ActionBarActivity {
 
             @Override
             public void onError(Throwable throwable) {
+                if (throwable instanceof APODIsNotAPictureException) {
+                    setAPODIsNotAPictureImage();
+                    return;
+                }
                 displayMessageFromStringRes(R.string.error_loading_apod);
                 throwable.printStackTrace();
             }
         });
     }
 
+    private void setAPODIsNotAPictureImage() {
+        previewImageView.setVisibility(View.GONE);
+        errorMessageTextView.setText(getString(R.string.apod_is_not_a_picture));
+        errorMessageTextView.setVisibility(View.VISIBLE);
+    }
+
     private void downloadAndSetPicture(String pictureUrl) {
+        errorMessageTextView.setVisibility(View.GONE);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);

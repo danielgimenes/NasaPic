@@ -1,5 +1,6 @@
 package br.com.dgimenes.nasapic.interactor;
 
+import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.webservice.ApodDTO;
 import br.com.dgimenes.nasapic.webservice.NasaWebservice;
 import retrofit.Callback;
@@ -20,18 +21,22 @@ public class ApodInteractor {
         this.nasaWebservice = restAdapter.create(NasaWebservice.class);
     }
 
-    public void getNasaApodURI(final OnFinishListener<String> onFinishListener) {
+    public void getNasaApodPictureURI(final OnFinishListener<String> onFinishListener) {
 
         nasaWebservice.getAPOD(NASA_API_KEY, false, new Callback<ApodDTO>() {
 
             @Override
             public void success(ApodDTO apodDTO, Response response) {
+                if (apodDTO.getMediaType() != "image") {
+                    onFinishListener.onError(new APODIsNotAPictureException());
+                    return;
+                }
                 onFinishListener.onSuccess(apodDTO.getUrl());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                onFinishListener.onError(error.getCause());
+
             }
         });
     }
