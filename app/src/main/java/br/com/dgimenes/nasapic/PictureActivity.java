@@ -60,9 +60,9 @@ public class PictureActivity extends ActionBarActivity {
                     WallpaperManager wallpaperMgr = WallpaperManager.getInstance(PictureActivity.this);
                     wallpaperMgr.setWallpaperOffsetSteps(0.5f, 1.0f);
                     wallpaperMgr.setBitmap(((BitmapDrawable) previewImageView.getDrawable()).getBitmap());
-                    displayMessageFromStringRes(R.string.wallpaper_set);
+                    displayToastMessage(getString(R.string.wallpaper_set));
                 } catch (IOException e) {
-                    displayMessageFromStringRes(R.string.error_setting_wallpaper);
+                    displayToastMessage(getString(R.string.error_setting_wallpaper));
                     e.printStackTrace();
                 }
             }
@@ -75,7 +75,12 @@ public class PictureActivity extends ActionBarActivity {
         errorMessageTextView = (TextView) findViewById(R.id.error_message);
     }
 
+    private void displayToastMessage(String message) {
+        Toast.makeText(PictureActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
     private void loadNasaAPOD() {
+        setLoadingImage();
         new ApodInteractor().getNasaApodPictureURI(new OnFinishListener<String>() {
 
             @Override
@@ -86,18 +91,22 @@ public class PictureActivity extends ActionBarActivity {
             @Override
             public void onError(Throwable throwable) {
                 if (throwable instanceof APODIsNotAPictureException) {
-                    setAPODIsNotAPictureImage();
+                    displayErrorMessage(getString(R.string.apod_is_not_a_picture));
                     return;
                 }
-                displayMessageFromStringRes(R.string.error_loading_apod);
+                displayErrorMessage(getString(R.string.error_loading_apod));
                 throwable.printStackTrace();
             }
         });
     }
 
-    private void setAPODIsNotAPictureImage() {
+    private void setLoadingImage() {
+        previewImageView.setImageDrawable(getResources().getDrawable(R.drawable.loading));
+    }
+
+    private void displayErrorMessage(String errorMessage) {
         previewImageView.setVisibility(View.GONE);
-        errorMessageTextView.setText(getString(R.string.apod_is_not_a_picture));
+        errorMessageTextView.setText(errorMessage);
         errorMessageTextView.setVisibility(View.VISIBLE);
     }
 
@@ -107,8 +116,12 @@ public class PictureActivity extends ActionBarActivity {
         Point size = new Point();
         display.getSize(size);
         int ideal_height = size.y;
-        picasso.load(pictureUrl).placeholder(R.drawable.loading).resize(0, ideal_height)
-                .into(previewImageView);
+        try {
+            picasso.load(pictureUrl).placeholder(R.drawable.loading).resize(0, ideal_height)
+                    .into(previewImageView);
+        } catch (RuntimeException e) {
+            displayErrorMessage(getString(R.string.error_loading_apod));
+        }
     }
 
     private void setupPicasso() {
@@ -117,7 +130,7 @@ public class PictureActivity extends ActionBarActivity {
                 .listener(new Picasso.Listener() {
                     @Override
                     public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                        displayMessageFromStringRes(R.string.error_downloading_apod);
+                        displayErrorMessage(getString(R.string.error_downloading_apod));
                     }
                 })
                 .build();
@@ -151,8 +164,4 @@ public class PictureActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayMessageFromStringRes(int stringRes) {
-        String message = getResources().getString(stringRes);
-        Toast.makeText(PictureActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
 }

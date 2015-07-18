@@ -1,9 +1,12 @@
 package br.com.dgimenes.nasapic.webservice;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ApodDTO {
     private String url;
+    @SerializedName("media_type")
     private String mediaType;
     private String explanation;
     private List<String> concepts;

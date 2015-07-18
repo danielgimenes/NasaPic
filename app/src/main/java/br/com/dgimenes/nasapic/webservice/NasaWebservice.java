@@ -9,5 +9,6 @@ public interface NasaWebservice {
     @GET("/apod")
     void getAPOD(@Query("api_key") String nasaApiKey,
                  @Query("concept_tags") boolean conceptTags,
+                 @Query("date") String formattedDate,
                  Callback<ApodDTO> callback);
 }
