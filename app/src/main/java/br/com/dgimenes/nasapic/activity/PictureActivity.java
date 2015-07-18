@@ -1,9 +1,8 @@
-package br.com.dgimenes.nasapic;
+package br.com.dgimenes.nasapic.activity;
 
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -26,33 +25,41 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.interactor.OnFinishListener;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class PictureActivity extends ActionBarActivity {
 
     private Picasso picasso;
 
-    private ImageView previewImageView;
-    private Button setWallpaperButton;
-    private TextView titleTextView;
-    private TextView errorMessageTextView;
+    @Bind(R.id.apod_preview_image)
+    ImageView previewImageView;
+
+    @Bind(R.id.set_wallpaper_button)
+    Button setWallpaperButton;
+
+    @Bind(R.id.title_text)
+    TextView titleTextView;
+
+    @Bind(R.id.error_message)
+    TextView errorMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
+        ButterKnife.bind(this);
         setupUI();
         setupPicasso();
         loadNasaAPOD();
     }
 
     private void setupUI() {
-        previewImageView = (ImageView) findViewById(R.id.apod_preview_image);
-        setWallpaperButton = (Button) findViewById(R.id.set_wallpaper_button);
-
         setWallpaperButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,11 +75,8 @@ public class PictureActivity extends ActionBarActivity {
             }
         });
 
-        titleTextView = (TextView) findViewById(R.id.title_text);
         titleTextView.setText(Html.fromHtml(getResources().getString(R.string.picture_screen_title)));
         titleTextView.setMovementMethod(LinkMovementMethod.getInstance());
-
-        errorMessageTextView = (TextView) findViewById(R.id.error_message);
     }
 
     private void displayToastMessage(String message) {
