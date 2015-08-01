@@ -90,7 +90,7 @@ public class APODPageFragment extends Fragment {
     private void setupPicasso() {
         if (picasso == null) {
             picasso = new Picasso.Builder(getActivity())
-                    .downloader(new OkHttpDownloader(new OkHttpClient()))
+                    .downloader(new OkHttpDownloader(getActivity(), Integer.MAX_VALUE))
                     .listener(new Picasso.Listener() {
                         @Override
                         public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
@@ -98,6 +98,7 @@ public class APODPageFragment extends Fragment {
                         }
                     })
                     .build();
+            picasso.setIndicatorsEnabled(true);
         }
     }
 }
