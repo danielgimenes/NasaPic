@@ -2,32 +2,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FDFDFD"
-    android:padding="@dimen/activity_vertical_margin">
+    android:padding="0dp">
 
-    <TextView
-        android:id="@+id/title_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textSize="14sp" />
-
-    <ImageView
-        android:id="@+id/apod_preview_image"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/set_wallpaper_button"
-        android:layout_below="@+id/title_text"
-        android:layout_margin="20dp" />
+        android:orientation="vertical"
+        android:layout_above="@+id/set_wallpaper_button">
 
-    <TextView
-        android:id="@+id/error_message"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/set_wallpaper_button"
-        android:layout_below="@+id/title_text"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp" />
+
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/apod_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/set_wallpaper_button"

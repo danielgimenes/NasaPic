@@ -13,7 +13,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class ApodInteractor {
-    private static final String NASA_API_KEY = "DEMO_KEY";
+    private static final String NASA_API_KEY = "biwbr55t29bUSURh2hMbkccNkpvRoNyVi8XBHxm1";
     private static final String NASA_API_BASE_URL = "https://api.nasa.gov/planetary";
     private static final String NASA_API_DATE_FORMAT = "yyyy-MM-dd";
     private final NasaWebservice nasaWebservice;
@@ -26,15 +26,20 @@ public class ApodInteractor {
         this.nasaWebservice = restAdapter.create(NasaWebservice.class);
     }
 
-    public void getNasaApodPictureURI(final OnFinishListener<String> onFinishListener) {
+    public void getNasaApodPictureURI(int dateOffset,
+                                      final OnFinishListener<String> onFinishListener) {
         Calendar cal = Calendar.getInstance();
-        cal.roll(Calendar.DAY_OF_MONTH, 0);
+        cal.add(Calendar.DAY_OF_MONTH, dateOffset);
         Date today = cal.getTime();
         String formattedDate = new SimpleDateFormat(NASA_API_DATE_FORMAT).format(today);
         nasaWebservice.getAPOD(NASA_API_KEY, false, formattedDate, new Callback<ApodDTO>() {
 
             @Override
             public void success(ApodDTO apodDTO, Response response) {
+                if (apodDTO.getMediaType() == null) {
+                    throw new RuntimeException("Invalid response. Response: " +
+                            response.getStatus() + " " + response.getReason());
+                }
                 if (!apodDTO.getMediaType().equals("image")) {
                     onFinishListener.onError(new APODIsNotAPictureException());
                     return;
