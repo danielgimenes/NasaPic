@@ -1,6 +1,8 @@
 package br.com.dgimenes.nasapic.fragment;
 
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
@@ -100,5 +103,12 @@ public class APODPageFragment extends Fragment {
                     .build();
             picasso.setIndicatorsEnabled(true);
         }
+    }
+
+    public Bitmap getBitmap() throws IOException {
+        if (previewImageView == null || previewImageView.getVisibility() != View.VISIBLE) {
+            throw new IOException();
+        }
+        return ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
     }
 }
