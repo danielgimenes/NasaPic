@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_planet_shape_color">#000</color>
+    <color name="launcher_star_color">#aaa</color>
+    <color name="sun_shape_gradient_start_color">#FFffd118</color>
+    <color name="sun_shape_gradient_center_color">#77ffd118</color>
+    <color name="sun_shape_gradient_end_color">#00222222</color>
+</resources>

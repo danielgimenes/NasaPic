@@ -2,17 +2,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="br.com.dgimenes.nasapic.activity.LaunchActivity">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/starfield"/>
+
     <TextView
-        android:id="@+id/text_view"
+        android:id="@+id/sun_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="20dp"/>
+        android:background="@drawable/sun_shape"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="-500dp"
+        android:layout_marginTop="-300dp"/>
+
+
+    <TextView
+        android:id="@+id/planet_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/planet_shape"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

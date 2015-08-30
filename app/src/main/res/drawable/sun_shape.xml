@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <size
+        android:height="1000dp"
+        android:width="1000dp"/>
+    <gradient
+        android:startColor="@color/sun_shape_gradient_start_color"
+        android:centerColor="@color/sun_shape_gradient_center_color"
+        android:endColor="@color/sun_shape_gradient_end_color"
+        android:gradientRadius="1000"
+        android:type="radial"/>
+</shape>
