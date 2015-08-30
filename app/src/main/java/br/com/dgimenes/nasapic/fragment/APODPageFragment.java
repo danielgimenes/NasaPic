@@ -1,5 +1,7 @@
 package br.com.dgimenes.nasapic.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.activity.ImageZoomActivity;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.interactor.OnFinishListener;
@@ -44,6 +47,24 @@ public class APODPageFragment extends Fragment {
         return rootView;
     }
 
+    private void setupImageZooming() {
+        previewImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = APODPageFragment.this.getActivity();
+                Bitmap bmp = ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
+                try {
+                    String path = ImageZoomActivity.saveImageOnDiskTemporarily(activity, bmp);
+                    Intent intent = new Intent(activity, ImageZoomActivity.class);
+                    intent.putExtra(ImageZoomActivity.IMAGE_PATH_PARAM, path);
+                    activity.startActivity(intent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void loadNasaAPOD(int dateOffset) {
         setLoadingImage();
         new ApodInteractor().getNasaApodPictureURI(dateOffset, new OnFinishListener<String>() {
@@ -51,6 +72,7 @@ public class APODPageFragment extends Fragment {
             @Override
             public void onSuccess(String pictureUrl) {
                 downloadAndSetPicture(pictureUrl);
+                setupImageZooming();
             }
 
             @Override
