@@ -10,7 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +26,7 @@ import java.io.IOException;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.APODPagerAdapter;
+import br.com.dgimenes.nasapic.view.URLSpanNoUnderline;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -64,13 +69,20 @@ public class PictureActivity extends ActionBarActivity {
                     @Override
                     public void onClick(View v) {
                         showLoadingDialog();
-                        new SetWallpaperAsyncTask().execute();
+                        try {
+                            Bitmap bmp = apodPagerAdapter.getFragment(apodPager.getCurrentItem())
+                                    .getBitmap();
+                            new SetWallpaperAsyncTask().execute(bmp);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-
         );
 
-        titleTextView.setText(Html.fromHtml(getResources().getString(R.string.picture_screen_title)));
+        String labelText = getResources().getString(R.string.picture_screen_title);
+        titleTextView.setText(Html.fromHtml(labelText));
+        URLSpanNoUnderline.removeUrlUnderline(titleTextView);
         titleTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
@@ -118,16 +130,14 @@ public class PictureActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class SetWallpaperAsyncTask extends AsyncTask<Void, Void, Boolean> {
+    class SetWallpaperAsyncTask extends AsyncTask<Bitmap, Void, Boolean> {
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground(Bitmap... params) {
             try {
                 WallpaperManager wallpaperMgr = WallpaperManager.getInstance(PictureActivity.this);
                 wallpaperMgr.setWallpaperOffsetSteps(0.5f, 1.0f);
-                Bitmap bmp = apodPagerAdapter.getFragment(apodPager.getCurrentItem())
-                        .getBitmap();
-                wallpaperMgr.setBitmap(bmp);
+                wallpaperMgr.setBitmap(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;

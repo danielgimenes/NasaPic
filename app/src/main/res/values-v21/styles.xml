@@ -1,10 +1,10 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/palette_primary</item>
         <item name="colorPrimaryDark">@color/palette_primary_dark</item>
         <item name="android:windowBackground">@color/palette_background</item>
+        <item name="android:navigationBarColor">@color/palette_primary_dark</item>
     </style>
 
     <style name="ImageZoomTheme" parent="AppTheme">
@@ -12,17 +12,7 @@
         <item name="android:windowBackground">@color/palette_darkest</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimaryDark">@color/palette_darkest</item>
+        <item name="android:navigationBarColor">@color/palette_darkest</item>
     </style>
 
-    <style name="AppTheme.ActionBar.Transparent" parent="Base.Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="background">@android:color/transparent</item>
-    </style>
-
-    <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
-        <item name="android:background">@color/palette_highlight</item>
-        <item name="background">@color/palette_highlight</item>
-        <item name="android:textColor">?android:textColorPrimaryInverse</item>
-        <item name="android:padding">10dp</item>
-    </style>
 </resources>

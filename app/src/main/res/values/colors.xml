@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="image_zoom_activity_background">#000</color>
+    <color name="palette_background">#D8DBE2</color>
+    <color name="palette_primary">#373c57</color>
+    <color name="palette_primary_dark">#222847</color>
+    <color name="palette_highlight">#456ea8</color>
+    <color name="palette_darkest">#071013</color>
+    <color name="palette_brightest">#FFF</color>
 </resources>
