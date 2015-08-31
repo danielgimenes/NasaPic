@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +27,10 @@ public class APODPictureAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         int dateOffset = (position + 1) - numOfDaysToShow;
         APODPictureFragment fragment = new APODPictureFragment();
+        Calendar calendar= Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, dateOffset);
         Bundle bundle = new Bundle();
-        bundle.putInt(APODPictureFragment.DATE_OFFSET_PARAM, dateOffset);
+        bundle.putLong(APODPictureFragment.DATE_PARAM, calendar.getTime().getTime());
         fragment.setArguments(bundle);
         fragmentPerPosition.put(position, fragment);
         return fragment;

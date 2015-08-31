@@ -1,23 +1,17 @@
 package br.com.dgimenes.nasapic.activity;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.TabPagerAdapter;
-import br.com.dgimenes.nasapic.view.URLSpanNoUnderline;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

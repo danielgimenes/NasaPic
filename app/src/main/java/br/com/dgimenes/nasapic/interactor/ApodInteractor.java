@@ -29,12 +29,9 @@ public class ApodInteractor {
         this.nasaWebservice = restAdapter.create(NasaWebservice.class);
     }
 
-    public void getNasaApodPictureURI(int dateOffset,
+    public void getNasaApodPictureURI(Date date,
                                       final OnFinishListener<String> onFinishListener) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, dateOffset);
-        Date today = cal.getTime();
-        String formattedDate = new SimpleDateFormat(NASA_API_DATE_FORMAT).format(today);
+        String formattedDate = new SimpleDateFormat(NASA_API_DATE_FORMAT).format(date);
         nasaWebservice.getAPOD(NASA_API_KEY, false, formattedDate, new Callback<ApodDTO>() {
 
             @Override

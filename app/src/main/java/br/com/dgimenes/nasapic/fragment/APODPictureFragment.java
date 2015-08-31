@@ -20,6 +20,7 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.activity.ImageZoomActivity;
@@ -29,7 +30,7 @@ import br.com.dgimenes.nasapic.interactor.OnFinishListener;
 
 public class APODPictureFragment extends Fragment {
 
-    public static final String DATE_OFFSET_PARAM = "DATE_OFFSET";
+    public static final String DATE_PARAM = "DATE_PARAM";
     private ImageView previewImageView;
     private TextView errorMessageTextView;
     private Picasso picasso;
@@ -39,11 +40,11 @@ public class APODPictureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_apod_page, container, false);
-        int dateOffset = getArguments().getInt(DATE_OFFSET_PARAM);
+        Date date = new Date(getArguments().getLong(DATE_PARAM));
         previewImageView = (ImageView) rootView.findViewById(R.id.apod_preview_image);
         errorMessageTextView = (TextView) rootView.findViewById(R.id.error_message);
         setupPicasso();
-        loadNasaAPOD(dateOffset);
+        loadNasaAPOD(date);
         return rootView;
     }
 
@@ -65,9 +66,9 @@ public class APODPictureFragment extends Fragment {
         });
     }
 
-    private void loadNasaAPOD(int dateOffset) {
+    private void loadNasaAPOD(Date date) {
         setLoadingImage();
-        new ApodInteractor().getNasaApodPictureURI(dateOffset, new OnFinishListener<String>() {
+        new ApodInteractor().getNasaApodPictureURI(date, new OnFinishListener<String>() {
 
             @Override
             public void onSuccess(String pictureUrl) {

@@ -26,11 +26,9 @@ public class BestPicturesAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        int numOfDaysToShow = 3;
-        int dateOffset = (position + 1) - numOfDaysToShow;
         APODPictureFragment fragment = new APODPictureFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(APODPictureFragment.DATE_OFFSET_PARAM, dateOffset);
+        bundle.putLong(APODPictureFragment.DATE_PARAM, bestPicsDates.get(position).getTime());
         fragment.setArguments(bundle);
         fragmentPerPosition.put(position, fragment);
         return fragment;

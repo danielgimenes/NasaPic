@@ -33,16 +33,16 @@ public class BestPicturesTabFragment extends Fragment {
     private ProgressDialog loadingDialog;
 
     private static final Date[] bestPicsDates = {
-            date(2015, 1, 1),
-            date(2015, 1, 2),
-            date(2015, 1, 3),
-            date(2015, 1, 4),
-            date(2015, 1, 5),
+            date(2014, 5, 19),
+            date(2012, 3, 25),
+            date(2011, 5, 17),
+            date(2015, 7, 24),
+            date(2007, 10, 18),
     };
 
     private static Date date(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
-        cal.set(year, month, day);
+        cal.set(year, month - 1, day); // month is zero-based
         return cal.getTime();
     }
 
