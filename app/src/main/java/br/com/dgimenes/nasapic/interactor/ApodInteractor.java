@@ -1,5 +1,8 @@
 package br.com.dgimenes.nasapic.interactor;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,8 +40,11 @@ public class ApodInteractor {
             @Override
             public void success(ApodDTO apodDTO, Response response) {
                 if (apodDTO.getMediaType() == null) {
-                    throw new RuntimeException("Invalid response. Response: " +
-                            response.getStatus() + " " + response.getReason());
+                    String errorMessage = "Invalid response. Response: " +
+                            response.getStatus() + " " + response.getReason();
+                    Log.e(ApodInteractor.class.getSimpleName(), errorMessage);
+                    Toast.makeText(null, errorMessage, Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (!apodDTO.getMediaType().equals("image")) {
                     onFinishListener.onError(new APODIsNotAPictureException());
