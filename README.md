@@ -1,2 +1,4 @@
 # NasaPic
-Android app that downloads Nasa's Astronomy Picture of the Day and set it as the device's wallpaper
+Android App - Set NASA's Astronomy Picture of the Day as your wallpaper! 
+
+https://play.google.com/store/apps/details?id=br.com.dgimenes.nasapic
