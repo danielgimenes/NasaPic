@@ -68,7 +68,7 @@ public class APODPictureFragment extends Fragment {
 
     private void loadNasaAPOD(Date date) {
         setLoadingImage();
-        new ApodInteractor().getNasaApodPictureURI(date, new OnFinishListener<String>() {
+        new ApodInteractor(getActivity()).getNasaApodPictureURI(date, new OnFinishListener<String>() {
 
             @Override
             public void onSuccess(String pictureUrl) {
