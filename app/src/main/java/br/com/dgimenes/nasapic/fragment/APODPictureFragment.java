@@ -27,7 +27,7 @@ import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.interactor.OnFinishListener;
 
-public class APODPageFragment extends Fragment {
+public class APODPictureFragment extends Fragment {
 
     public static final String DATE_OFFSET_PARAM = "DATE_OFFSET";
     private ImageView previewImageView;
@@ -51,7 +51,7 @@ public class APODPageFragment extends Fragment {
         previewImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity activity = APODPageFragment.this.getActivity();
+                Activity activity = APODPictureFragment.this.getActivity();
                 Bitmap bmp = ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
                 try {
                     String path = ImageZoomActivity.saveImageOnDiskTemporarily(activity, bmp);

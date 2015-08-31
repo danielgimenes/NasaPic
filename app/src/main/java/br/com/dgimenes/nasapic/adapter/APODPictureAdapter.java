@@ -8,15 +8,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.dgimenes.nasapic.fragment.APODPageFragment;
+import br.com.dgimenes.nasapic.fragment.APODPictureFragment;
 
-public class APODPagerAdapter extends FragmentStatePagerAdapter {
+public class APODPictureAdapter extends FragmentStatePagerAdapter {
 
     private final int numOfDaysToShow;
 
-    private Map<Integer, APODPageFragment> fragmentPerPosition;
+    private Map<Integer, APODPictureFragment> fragmentPerPosition;
 
-    public APODPagerAdapter(FragmentManager supportFragmentManager, int numOfDaysToShow) {
+    public APODPictureAdapter(FragmentManager supportFragmentManager, int numOfDaysToShow) {
         super(supportFragmentManager);
         this.numOfDaysToShow = numOfDaysToShow;
         fragmentPerPosition = new HashMap<>();
@@ -25,15 +25,15 @@ public class APODPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         int dateOffset = (position + 1) - numOfDaysToShow;
-        APODPageFragment fragment = new APODPageFragment();
+        APODPictureFragment fragment = new APODPictureFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(APODPageFragment.DATE_OFFSET_PARAM, dateOffset);
+        bundle.putInt(APODPictureFragment.DATE_OFFSET_PARAM, dateOffset);
         fragment.setArguments(bundle);
         fragmentPerPosition.put(position, fragment);
         return fragment;
     }
 
-    public APODPageFragment getFragment(int position) {
+    public APODPictureFragment getFragment(int position) {
         return fragmentPerPosition.get(position);
     }
 

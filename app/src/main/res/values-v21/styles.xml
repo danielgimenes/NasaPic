@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/palette_primary</item>
         <item name="colorPrimaryDark">@color/palette_primary_dark</item>
+        <item name="colorAccent">@color/palette_highlight</item>
         <item name="android:windowBackground">@color/palette_background</item>
         <item name="android:navigationBarColor">@color/palette_primary_dark</item>
     </style>
@@ -14,5 +15,4 @@
         <item name="colorPrimaryDark">@color/palette_darkest</item>
         <item name="android:navigationBarColor">@color/palette_darkest</item>
     </style>
-
 </resources>

@@ -18,15 +18,15 @@ public class URLSpanNoUnderline extends URLSpan {
         ds.setUnderlineText(false);
     }
 
-    public static void removeUrlUnderline(TextView textView) {
-        Spannable spannable = new SpannableString(textView.getText());
-        for (URLSpan span : spannable.getSpans(0, textView.getText().length(), URLSpan.class)) {
+    public static Spannable removeUrlUnderline(CharSequence text) {
+        Spannable spannable = new SpannableString(text);
+        for (URLSpan span : spannable.getSpans(0, text.length(), URLSpan.class)) {
             int start = spannable.getSpanStart(span);
             int end = spannable.getSpanEnd(span);
             spannable.removeSpan(span);
             span = new URLSpanNoUnderline(span.getURL());
             spannable.setSpan(span, start, end, 0);
         }
-        textView.setText(spannable);
+        return spannable;
     }
 }

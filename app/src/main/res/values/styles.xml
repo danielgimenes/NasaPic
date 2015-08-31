@@ -4,7 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/palette_primary</item>
         <item name="colorPrimaryDark">@color/palette_primary_dark</item>
+        <item name="colorAccent">@color/palette_highlight</item>
         <item name="android:windowBackground">@color/palette_background</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="ImageZoomTheme" parent="AppTheme">
@@ -24,5 +26,20 @@
         <item name="background">@color/palette_highlight</item>
         <item name="android:textColor">?android:textColorPrimaryInverse</item>
         <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabMaxWidth">@dimen/tab_max_width</item>
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabPaddingStart">6dp</item>
+        <item name="tabPaddingEnd">6dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/AppTheme.TabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/palette_brightest</item>
+    </style>
+
+    <style name="AppTheme.TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">#AAA</item>
     </style>
 </resources>
