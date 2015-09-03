@@ -33,10 +33,10 @@ public class BestPicturesTabFragment extends Fragment {
     private ProgressDialog loadingDialog;
 
     private static final Date[] bestPicsDates = {
-            date(2014, 5, 19),
+            //date(2014, 5, 19),
             date(2012, 3, 25),
             date(2011, 5, 17),
-            date(2015, 7, 24),
+            //date(2015, 7, 24),
             date(2007, 10, 18),
     };
 
@@ -63,7 +63,7 @@ public class BestPicturesTabFragment extends Fragment {
         bestPicsPager.setClipToPadding(false);
         bestPicsPager.setPageMargin(-60);
         bestPicsPager.setPadding(50, 0, 50, 0);
-        bestPicsPager.setOffscreenPageLimit(2);
+        bestPicsPager.setOffscreenPageLimit(4);
         setWallpaperButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

@@ -28,7 +28,7 @@ import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.interactor.OnFinishListener;
 
-public class APODPictureFragment extends Fragment {
+public class SinglePictureFragment extends Fragment {
 
     public static final String DATE_PARAM = "DATE_PARAM";
     private ImageView previewImageView;
@@ -52,7 +52,7 @@ public class APODPictureFragment extends Fragment {
         previewImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity activity = APODPictureFragment.this.getActivity();
+                Activity activity = SinglePictureFragment.this.getActivity();
                 Bitmap bmp = ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
                 try {
                     String path = ImageZoomActivity.saveImageOnDiskTemporarily(activity, bmp);
@@ -79,12 +79,12 @@ public class APODPictureFragment extends Fragment {
             @Override
             public void onError(Throwable throwable) {
                 if (throwable instanceof APODIsNotAPictureException) {
-                    displayErrorMessage(getString(R.string.apod_is_not_a_picture));
+                    displayErrorMessage(R.string.apod_is_not_a_picture);
                     return;
                 } else if (throwable != null) {
                     throwable.printStackTrace();
                 }
-                displayErrorMessage(getString(R.string.error_loading_apod));
+                displayErrorMessage(R.string.error_loading_apod);
             }
         });
     }
@@ -93,23 +93,28 @@ public class APODPictureFragment extends Fragment {
         previewImageView.setImageDrawable(getResources().getDrawable(R.drawable.loading));
     }
 
-    private void displayErrorMessage(String errorMessage) {
-        previewImageView.setVisibility(View.GONE);
-        errorMessageTextView.setText(errorMessage);
-        errorMessageTextView.setVisibility(View.VISIBLE);
+    private void displayErrorMessage(int errorMessageResource) {
+        try {
+            String errorMessage = getString(R.string.error_loading_apod);
+            previewImageView.setVisibility(View.GONE);
+            errorMessageTextView.setText(errorMessage);
+            errorMessageTextView.setVisibility(View.VISIBLE);
+        } catch (RuntimeException e) {
+            // TODO refactor this...
+        }
     }
 
     private void downloadAndSetPicture(String pictureUrl) {
         errorMessageTextView.setVisibility(View.GONE);
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int ideal_height = size.y;
         try {
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int ideal_height = size.y;
             picasso.load(pictureUrl).placeholder(R.drawable.loading).resize(0, ideal_height)
                     .into(previewImageView);
         } catch (RuntimeException e) {
-            displayErrorMessage(getString(R.string.error_loading_apod));
+            displayErrorMessage(R.string.error_loading_apod);
         }
     }
 
@@ -120,7 +125,7 @@ public class APODPictureFragment extends Fragment {
                     .listener(new Picasso.Listener() {
                         @Override
                         public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                            displayErrorMessage(getString(R.string.error_downloading_apod));
+                            displayErrorMessage(R.string.error_downloading_apod);
                         }
                     })
                     .build();

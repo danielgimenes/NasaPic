@@ -9,13 +9,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.dgimenes.nasapic.fragment.APODPictureFragment;
+import br.com.dgimenes.nasapic.fragment.SinglePictureFragment;
 
 public class APODPictureAdapter extends FragmentStatePagerAdapter {
 
     private final int numOfDaysToShow;
 
-    private Map<Integer, APODPictureFragment> fragmentPerPosition;
+    private Map<Integer, SinglePictureFragment> fragmentPerPosition;
 
     public APODPictureAdapter(FragmentManager supportFragmentManager, int numOfDaysToShow) {
         super(supportFragmentManager);
@@ -26,17 +26,17 @@ public class APODPictureAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         int dateOffset = (position + 1) - numOfDaysToShow;
-        APODPictureFragment fragment = new APODPictureFragment();
+        SinglePictureFragment fragment = new SinglePictureFragment();
         Calendar calendar= Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, dateOffset);
         Bundle bundle = new Bundle();
-        bundle.putLong(APODPictureFragment.DATE_PARAM, calendar.getTime().getTime());
+        bundle.putLong(SinglePictureFragment.DATE_PARAM, calendar.getTime().getTime());
         fragment.setArguments(bundle);
         fragmentPerPosition.put(position, fragment);
         return fragment;
     }
 
-    public APODPictureFragment getFragment(int position) {
+    public SinglePictureFragment getFragment(int position) {
         return fragmentPerPosition.get(position);
     }
 
