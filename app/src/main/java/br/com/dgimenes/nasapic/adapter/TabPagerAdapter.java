@@ -12,8 +12,11 @@ import br.com.dgimenes.nasapic.fragment.RecentTabFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
 
-    public TabPagerAdapter(FragmentManager supportFragmentManager) {
+    private final Context context;
+
+    public TabPagerAdapter(FragmentManager supportFragmentManager, Context context) {
         super(supportFragmentManager);
+        this.context = context;
     }
 
     @Override
@@ -39,14 +42,14 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return " Recent";
+                return " " + context.getResources().getString(R.string.recent_tab_title);
             case 1:
-                return " Best";
+                return " " + context.getResources().getString(R.string.best_pics_tab_title);
         }
         return null;
     }
 
-    public Drawable getPageIcon(Context context, int position) {
+    public Drawable getPageIcon(int position) {
         switch (position) {
             case 0:
                 return context.getResources().getDrawable(R.drawable.ic_recent_tab);

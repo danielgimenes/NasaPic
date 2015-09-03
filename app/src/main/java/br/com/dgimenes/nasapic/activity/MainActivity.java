@@ -35,13 +35,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupUI() {
-        tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this);
         tabPager.setAdapter(tabPagerAdapter);
         int i = 0;
         tabLayout.addTab(tabLayout.newTab().setText(tabPagerAdapter.getPageTitle(i))
-                .setIcon(tabPagerAdapter.getPageIcon(this, i++)));
+                .setIcon(tabPagerAdapter.getPageIcon(i++)));
         tabLayout.addTab(tabLayout.newTab().setText(tabPagerAdapter.getPageTitle(i))
-                .setIcon(tabPagerAdapter.getPageIcon(this, i++)));
+                .setIcon(tabPagerAdapter.getPageIcon(i++)));
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(tabPager));
         tabPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
