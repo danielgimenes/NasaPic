@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +27,7 @@ import br.com.dgimenes.nasapic.activity.ImageZoomActivity;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.view.LoadingDialog;
 
 public class SinglePictureFragment extends Fragment {
 
@@ -34,6 +35,8 @@ public class SinglePictureFragment extends Fragment {
     private ImageView previewImageView;
     private TextView errorMessageTextView;
     private Picasso picasso;
+    private String pictureUrl;
+    private LoadingDialog loadingDialog;
 
     @Nullable
     @Override
@@ -43,6 +46,7 @@ public class SinglePictureFragment extends Fragment {
         Date date = new Date(getArguments().getLong(DATE_PARAM));
         previewImageView = (ImageView) rootView.findViewById(R.id.apod_preview_image);
         errorMessageTextView = (TextView) rootView.findViewById(R.id.error_message);
+        loadingDialog = new LoadingDialog(getActivity());
         setupPicasso();
         loadNasaAPOD(date);
         return rootView;
@@ -52,16 +56,30 @@ public class SinglePictureFragment extends Fragment {
         previewImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Activity activity = SinglePictureFragment.this.getActivity();
-                Bitmap bmp = ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
-                try {
-                    String path = ImageZoomActivity.saveImageOnDiskTemporarily(activity, bmp);
-                    Intent intent = new Intent(activity, ImageZoomActivity.class);
-                    intent.putExtra(ImageZoomActivity.IMAGE_PATH_PARAM, path);
-                    activity.startActivity(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                final Activity activity = SinglePictureFragment.this.getActivity();
+                loadingDialog.show();
+                downloadPictureAndDecodeInWallpaperSize(new OnFinishListener<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap bmp) {
+                        try {
+                            String path = ImageZoomActivity.saveImageOnDiskTemporarily(activity, bmp);
+                            Intent intent = new Intent(activity, ImageZoomActivity.class);
+                            intent.putExtra(ImageZoomActivity.IMAGE_PATH_PARAM, path);
+                            activity.startActivity(intent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        loadingDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        displayErrorMessage(R.string.error_loading_apod);
+                        loadingDialog.dismiss();
+                    }
+                });
+
+
             }
         });
     }
@@ -72,6 +90,7 @@ public class SinglePictureFragment extends Fragment {
 
             @Override
             public void onSuccess(String pictureUrl) {
+                SinglePictureFragment.this.pictureUrl = pictureUrl;
                 downloadAndSetPicture(pictureUrl);
                 setupImageZooming();
             }
@@ -95,7 +114,7 @@ public class SinglePictureFragment extends Fragment {
 
     private void displayErrorMessage(int errorMessageResource) {
         try {
-            String errorMessage = getString(R.string.error_loading_apod);
+            String errorMessage = getString(errorMessageResource);
             previewImageView.setVisibility(View.GONE);
             errorMessageTextView.setText(errorMessage);
             errorMessageTextView.setVisibility(View.VISIBLE);
@@ -107,12 +126,8 @@ public class SinglePictureFragment extends Fragment {
     private void downloadAndSetPicture(String pictureUrl) {
         errorMessageTextView.setVisibility(View.GONE);
         try {
-            Display display = getActivity().getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int ideal_height = size.y;
-            picasso.load(pictureUrl).placeholder(R.drawable.loading).resize(0, ideal_height)
-                    .into(previewImageView);
+            picasso.load(pictureUrl).placeholder(R.drawable.loading)
+                    .resize(previewImageView.getMeasuredWidth(), 0).into(previewImageView);
         } catch (RuntimeException e) {
             displayErrorMessage(R.string.error_loading_apod);
         }
@@ -133,10 +148,37 @@ public class SinglePictureFragment extends Fragment {
         }
     }
 
-    public Bitmap getBitmap() throws IOException {
-        if (previewImageView == null || previewImageView.getVisibility() != View.VISIBLE) {
-            throw new IOException();
-        }
-        return ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
+    public void getBitmap(final OnFinishListener<Bitmap> onFinishListener) {
+        downloadPictureAndDecodeInWallpaperSize(onFinishListener);
+    }
+
+    private void downloadPictureAndDecodeInWallpaperSize(final OnFinishListener<Bitmap> onFinishListener) {
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int idealHeight = size.y;
+        new AsyncTask<Integer, Void, Bitmap>() {
+
+            @Override
+            protected Bitmap doInBackground(Integer... params) {
+                int ideal_height = params[0];
+                try {
+                    return picasso.load(pictureUrl).placeholder(R.drawable.loading).resize(0, ideal_height).get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap == null) {
+                    onFinishListener.onError(null);
+                } else {
+                    onFinishListener.onSuccess(bitmap);
+                }
+            }
+        }.execute(idealHeight);
+
     }
 }

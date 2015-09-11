@@ -1,6 +1,5 @@
 package br.com.dgimenes.nasapic.fragment;
 
-import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -21,6 +20,8 @@ import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.BestPicturesAdapter;
+import br.com.dgimenes.nasapic.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.view.LoadingDialog;
 
 public class BestPicturesTabFragment extends Fragment {
 
@@ -30,7 +31,7 @@ public class BestPicturesTabFragment extends Fragment {
 
     private BestPicturesAdapter bestPicsPagerAdapter;
 
-    private ProgressDialog loadingDialog;
+    private LoadingDialog loadingDialog;
 
     private static final Date[] bestPicsDates = {
             //date(2014, 5, 19),
@@ -58,6 +59,7 @@ public class BestPicturesTabFragment extends Fragment {
     }
 
     private void setupUI() {
+        loadingDialog = new LoadingDialog(getActivity());
         bestPicsPagerAdapter = new BestPicturesAdapter(getFragmentManager(), Arrays.asList(bestPicsDates));
         bestPicsPager.setAdapter(bestPicsPagerAdapter);
         bestPicsPager.setClipToPadding(false);
@@ -68,29 +70,23 @@ public class BestPicturesTabFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showLoadingDialog();
-                        try {
-                            Bitmap bmp = bestPicsPagerAdapter.getFragment(bestPicsPager.getCurrentItem())
-                                    .getBitmap();
-                            new SetWallpaperAsyncTask().execute(bmp);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        loadingDialog.show();
+                        bestPicsPagerAdapter.getFragment(bestPicsPager.getCurrentItem())
+                                .getBitmap(new OnFinishListener<Bitmap>() {
+                                    @Override
+                                    public void onSuccess(Bitmap bmp) {
+                                        new SetWallpaperAsyncTask().execute(bmp);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable) {
+                                        displayToastMessage(
+                                                getString(R.string.error_setting_wallpaper));
+                                    }
+                                });
                     }
                 }
         );
-    }
-
-    private void hideLoadingDialog() {
-        loadingDialog.dismiss();
-    }
-
-    private void showLoadingDialog() {
-        loadingDialog = new ProgressDialog(getActivity());
-        loadingDialog.setIndeterminate(false);
-        loadingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loadingDialog.setMessage(getString(R.string.wait));
-        loadingDialog.show();
     }
 
     class SetWallpaperAsyncTask extends AsyncTask<Bitmap, Void, Boolean> {
@@ -115,7 +111,7 @@ public class BestPicturesTabFragment extends Fragment {
             } else {
                 displayToastMessage(getString(R.string.wallpaper_set));
             }
-            hideLoadingDialog();
+            loadingDialog.dismiss();
         }
     }
 

@@ -1,6 +1,5 @@
 package br.com.dgimenes.nasapic.fragment;
 
-import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -8,20 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.APODPictureAdapter;
-import br.com.dgimenes.nasapic.view.URLSpanNoUnderline;
+import br.com.dgimenes.nasapic.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.view.LoadingDialog;
 
 public class RecentTabFragment extends Fragment {
 
@@ -33,7 +30,7 @@ public class RecentTabFragment extends Fragment {
 
     private APODPictureAdapter apodPagerAdapter;
 
-    private ProgressDialog loadingDialog;
+    private LoadingDialog loadingDialog;
 
     @Nullable
     @Override
@@ -47,6 +44,7 @@ public class RecentTabFragment extends Fragment {
     }
 
     private void setupUI() {
+        loadingDialog = new LoadingDialog(getActivity());
         apodPagerAdapter = new APODPictureAdapter(getFragmentManager(), DAYS_TO_DISPLAY);
         apodPager.setAdapter(apodPagerAdapter);
         apodPager.setClipToPadding(false);
@@ -57,32 +55,26 @@ public class RecentTabFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showLoadingDialog();
-                        try {
-                            Bitmap bmp = apodPagerAdapter.getFragment(apodPager.getCurrentItem())
-                                    .getBitmap();
-                            new SetWallpaperAsyncTask().execute(bmp);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        loadingDialog.show();
+                        apodPagerAdapter.getFragment(apodPager.getCurrentItem())
+                                .getBitmap(new OnFinishListener<Bitmap>() {
+                                    @Override
+                                    public void onSuccess(Bitmap bmp) {
+                                        new SetWallpaperAsyncTask().execute(bmp);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable) {
+                                        displayToastMessage(
+                                                getString(R.string.error_setting_wallpaper));
+                                    }
+                                });
                     }
                 }
         );
-
     }
 
-    private void hideLoadingDialog() {
-        loadingDialog.dismiss();
-    }
-
-    private void showLoadingDialog() {
-        loadingDialog = new ProgressDialog(getActivity());
-        loadingDialog.setIndeterminate(false);
-        loadingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        loadingDialog.setMessage(getString(R.string.wait));
-        loadingDialog.show();
-    }
-
+    // TODO refactor duplicated code
     class SetWallpaperAsyncTask extends AsyncTask<Bitmap, Void, Boolean> {
 
         @Override
@@ -105,7 +97,7 @@ public class RecentTabFragment extends Fragment {
             } else {
                 displayToastMessage(getString(R.string.wallpaper_set));
             }
-            hideLoadingDialog();
+            loadingDialog.dismiss();
         }
     }
 
