@@ -63,8 +63,8 @@ public class BestPicturesTabFragment extends Fragment {
         bestPicsPagerAdapter = new BestPicturesAdapter(getFragmentManager(), Arrays.asList(bestPicsDates));
         bestPicsPager.setAdapter(bestPicsPagerAdapter);
         bestPicsPager.setClipToPadding(false);
-        bestPicsPager.setPageMargin(-60);
-        bestPicsPager.setPadding(50, 0, 50, 0);
+        bestPicsPager.setPageMargin(-80);
+        bestPicsPager.setPadding(20, 0, 20, 0);
         bestPicsPager.setOffscreenPageLimit(4);
         setWallpaperButton.setOnClickListener(
                 new View.OnClickListener() {

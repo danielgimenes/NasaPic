@@ -144,7 +144,6 @@ public class SinglePictureFragment extends Fragment {
                         }
                     })
                     .build();
-            picasso.setIndicatorsEnabled(true);
         }
     }
 

@@ -48,8 +48,8 @@ public class RecentTabFragment extends Fragment {
         apodPagerAdapter = new APODPictureAdapter(getFragmentManager(), DAYS_TO_DISPLAY);
         apodPager.setAdapter(apodPagerAdapter);
         apodPager.setClipToPadding(false);
-        apodPager.setPageMargin(-60);
-        apodPager.setPadding(50, 0, 50, 0);
+        apodPager.setPageMargin(-80);
+        apodPager.setPadding(20, 0, 20, 0);
         apodPager.setOffscreenPageLimit(4);
         setWallpaperButton.setOnClickListener(
                 new View.OnClickListener() {
