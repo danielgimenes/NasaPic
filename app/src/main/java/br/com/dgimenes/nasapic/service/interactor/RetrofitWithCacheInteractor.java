@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.interactor;
+package br.com.dgimenes.nasapic.service.interactor;
 
 import android.content.Context;
 

@@ -29,7 +29,6 @@
     </style>
 
     <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabMaxWidth">@dimen/tab_max_width</item>
         <item name="tabIndicatorColor">?attr/colorAccent</item>
         <item name="tabIndicatorHeight">4dp</item>
         <item name="tabPaddingStart">6dp</item>

@@ -20,7 +20,8 @@ import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.BestPicturesAdapter;
-import br.com.dgimenes.nasapic.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
+import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.view.LoadingDialog;
 
 public class BestPicturesTabFragment extends Fragment {
@@ -41,6 +42,8 @@ public class BestPicturesTabFragment extends Fragment {
             date(2007, 10, 18),
     };
 
+    private ApodInteractor apodInteractor;
+
     private static Date date(int year, int month, int day) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month - 1, day); // month is zero-based
@@ -54,6 +57,7 @@ public class BestPicturesTabFragment extends Fragment {
                 R.layout.fragment_best_pics_tab, container, false);
         setWallpaperButton = (Button) rootView.findViewById(R.id.best_pics_set_wallpaper_button);
         bestPicsPager = (ViewPager) rootView.findViewById(R.id.best_pics_pager);
+        apodInteractor = new ApodInteractor(getActivity());
         setupUI();
         return rootView;
     }
@@ -71,19 +75,22 @@ public class BestPicturesTabFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         loadingDialog.show();
-                        bestPicsPagerAdapter.getFragment(bestPicsPager.getCurrentItem())
-                                .getBitmap(new OnFinishListener<Bitmap>() {
-                                    @Override
-                                    public void onSuccess(Bitmap bmp) {
-                                        new SetWallpaperAsyncTask().execute(bmp);
-                                    }
+                        String pictureUrl = bestPicsPagerAdapter
+                                .getFragment(bestPicsPager.getCurrentItem()).getPictureUrl();
+                        apodInteractor.setWallpaper(pictureUrl, new OnFinishListener<Void>() {
+                            @Override
+                            public void onSuccess(Void none) {
+                                displayToastMessage(getString(R.string.wallpaper_set));
+                                loadingDialog.dismiss();
+                            }
 
-                                    @Override
-                                    public void onError(Throwable throwable) {
-                                        displayToastMessage(
-                                                getString(R.string.error_setting_wallpaper));
-                                    }
-                                });
+                            @Override
+                            public void onError(Throwable throwable) {
+                                loadingDialog.dismiss();
+                                displayToastMessage(
+                                        getString(R.string.error_setting_wallpaper));
+                            }
+                        });
                     }
                 }
         );

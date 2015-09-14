@@ -1,17 +1,22 @@
 package br.com.dgimenes.nasapic.activity;
 
 import android.app.AlertDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.TabPagerAdapter;
+import br.com.dgimenes.nasapic.service.PeriodicWallpaperChangeService;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -32,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();
+        setupPeriodicWallpaperChange();
     }
 
     private void setupUI() {
@@ -48,6 +54,22 @@ public class MainActivity extends ActionBarActivity {
                 && getSupportActionBar() != null) {
             tabLayout.setElevation(this.getSupportActionBar().getElevation());
             this.getSupportActionBar().setElevation(0);
+        }
+    }
+
+    private void setupPeriodicWallpaperChange() {
+        final int PERIOD_IN_HOURS = 12;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            ComponentName serviceEndpoint = new ComponentName(this, PeriodicWallpaperChangeService.class);
+            JobInfo wallpaperChangeJob = new JobInfo.Builder(
+                    PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
+                    .setRequiresCharging(false)
+                    //.setPersisted(true)
+                    .setRequiresDeviceIdle(true)
+                    .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
+                    .build();
+            JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            scheduler.schedule(wallpaperChangeJob);
         }
     }
 
