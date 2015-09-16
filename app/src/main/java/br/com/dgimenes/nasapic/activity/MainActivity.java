@@ -58,13 +58,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupPeriodicWallpaperChange() {
-        final int PERIOD_IN_HOURS = 12;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final int PERIOD_IN_HOURS = 6;
             ComponentName serviceEndpoint = new ComponentName(this, PeriodicWallpaperChangeService.class);
             JobInfo wallpaperChangeJob = new JobInfo.Builder(
                     PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
                     .setRequiresCharging(false)
-                    //.setPersisted(true)
+                    .setPersisted(true)
                     .setRequiresDeviceIdle(true)
                     .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
                     .build();

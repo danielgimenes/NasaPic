@@ -12,4 +12,7 @@
     <string name="wait">Please wait...</string>
     <string name="recent_tab_title">Recent</string>
     <string name="best_pics_tab_title">Best</string>
+    <string name="periodic_change_sucess">Wallpaper changed</string>
+    <string name="periodic_change_error">Error downloading wallpaper</string>
+    <string name="periodic_change_stopping_service">NasaPic PeriodicWallpaperChangeService stopping...</string>
 </resources>

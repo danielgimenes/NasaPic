@@ -1,8 +1,5 @@
 package br.com.dgimenes.nasapic.fragment;
 
-import android.app.WallpaperManager;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,32 +90,6 @@ public class BestPicturesTabFragment extends Fragment {
                     }
                 }
         );
-    }
-
-    class SetWallpaperAsyncTask extends AsyncTask<Bitmap, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Bitmap... params) {
-            try {
-                WallpaperManager wallpaperMgr = WallpaperManager.getInstance(BestPicturesTabFragment.this.getActivity());
-                wallpaperMgr.setWallpaperOffsetSteps(0.5f, 1.0f);
-                wallpaperMgr.setBitmap(params[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (!success) {
-                displayToastMessage(getString(R.string.error_setting_wallpaper));
-            } else {
-                displayToastMessage(getString(R.string.wallpaper_set));
-            }
-            loadingDialog.dismiss();
-        }
     }
 
     private void displayToastMessage(String message) {
