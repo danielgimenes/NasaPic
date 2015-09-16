@@ -49,7 +49,7 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                     String errorMessage = "Invalid response. Response: " +
                             response.getStatus() + " " + response.getReason();
                     Log.e(ApodInteractor.class.getSimpleName(), errorMessage);
-                    Toast.makeText(null, errorMessage, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!apodDTO.getMediaType().equals("image")) {

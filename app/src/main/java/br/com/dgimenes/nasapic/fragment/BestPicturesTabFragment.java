@@ -31,10 +31,10 @@ public class BestPicturesTabFragment extends Fragment {
     private LoadingDialog loadingDialog;
 
     private static final Date[] bestPicsDates = {
-            //date(2014, 5, 19),
+            date(2014, 5, 19),
             date(2012, 3, 25),
             date(2011, 5, 17),
-            //date(2015, 7, 24),
+            date(2015, 7, 24),
             date(2007, 10, 18),
     };
 

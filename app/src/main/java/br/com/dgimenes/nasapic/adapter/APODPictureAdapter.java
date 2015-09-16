@@ -25,7 +25,7 @@ public class APODPictureAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        int dateOffset = (position + 1) - numOfDaysToShow;
+        int dateOffset = position * -1;
         SinglePictureFragment fragment = new SinglePictureFragment();
         Calendar calendar= Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, dateOffset);
