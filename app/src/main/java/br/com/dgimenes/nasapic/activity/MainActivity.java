@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.adapter.TabPagerAdapter;
@@ -60,16 +61,21 @@ public class MainActivity extends ActionBarActivity {
     private void setupPeriodicWallpaperChange() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             final int PERIOD_IN_HOURS = 6;
-            ComponentName serviceEndpoint = new ComponentName(this, PeriodicWallpaperChangeService.class);
-            JobInfo wallpaperChangeJob = new JobInfo.Builder(
-                    PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
-                    .setRequiresCharging(false)
-                    .setPersisted(true)
-                    .setRequiresDeviceIdle(true)
-                    .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
-                    .build();
             JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            scheduler.schedule(wallpaperChangeJob);
+            if (scheduler.getAllPendingJobs().size() == 0) {
+                ComponentName serviceEndpoint = new ComponentName(this, PeriodicWallpaperChangeService.class);
+                JobInfo wallpaperChangeJob = new JobInfo.Builder(
+                        PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
+                        .setRequiresCharging(false)
+                        .setPersisted(true)
+                        .setRequiresDeviceIdle(true)
+                        .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
+                        .build();
+
+                scheduler.schedule(wallpaperChangeJob);
+                String scheduledMessage = getResources().getString(R.string.periodic_change_scheduled);
+                Toast.makeText(this, scheduledMessage, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

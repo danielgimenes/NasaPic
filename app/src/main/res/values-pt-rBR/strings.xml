@@ -12,4 +12,8 @@
     <string name="wait">Aguarde...</string>
     <string name="recent_tab_title">Novas</string>
     <string name="best_pics_tab_title">Melhores</string>
+    <string name="periodic_change_sucess">Papel de parede alterado</string>
+    <string name="periodic_change_error">Erro baixando papel de parede</string>
+    <string name="periodic_change_stopping_service">NasaPic PeriodicWallpaperChangeService stopping...</string>
+    <string name="periodic_change_scheduled">Troca diária configurada</string>
 </resources>
