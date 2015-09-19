@@ -200,8 +200,7 @@ public class PeriodicWallpaperChangeService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        String stopMessage = getResources().getString(R.string.periodic_change_stopping_service);
-        createNotification(stopMessage);
+        createNotification("NasaPic PeriodicWallpaperChangeService stopping...");
         return false; // means everything is done
     }
 }
