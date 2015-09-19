@@ -3,13 +3,18 @@ package br.com.dgimenes.nasapic.service.interactor;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,6 +33,7 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
     private static final String NASA_API_KEY = "biwbr55t29bUSURh2hMbkccNkpvRoNyVi8XBHxm1";
     private static final String NASA_API_BASE_URL = "https://api.nasa.gov/planetary";
     private static final String NASA_API_DATE_FORMAT = "yyyy-MM-dd";
+    private static final String LAST_WALLPAPER_FILE_NAME = "last_wallpaper";
 
     private final NasaWebservice nasaWebservice;
     private Context context;
@@ -132,6 +138,7 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                     @Override
                     protected Boolean doInBackground(Bitmap... params) {
                         try {
+                            storeLastWallpaper();
                             WallpaperManager wallpaperMgr = WallpaperManager.getInstance(context);
                             wallpaperMgr.setWallpaperOffsetSteps(0.5f, 1.0f);
                             wallpaperMgr.setBitmap(params[0]);
@@ -159,5 +166,47 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                 onFinishListener.onError(throwable);
             }
         });
+    }
+
+    private void storeLastWallpaper() throws IOException {
+        WallpaperManager wallpaperMgr = WallpaperManager.getInstance(context);
+        File lastWallpaperFile = new File(context.getFilesDir(), LAST_WALLPAPER_FILE_NAME);
+        if (!lastWallpaperFile.createNewFile()) {
+            lastWallpaperFile.delete();
+            lastWallpaperFile.createNewFile();
+        }
+        if (wallpaperMgr.getDrawable() instanceof BitmapDrawable) {
+            FileOutputStream outputStream = context.openFileOutput(LAST_WALLPAPER_FILE_NAME,
+                    Context.MODE_PRIVATE);
+            ((BitmapDrawable)wallpaperMgr.getDrawable()).getBitmap().compress(
+                    Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.close();
+        }
+    }
+
+    private Bitmap retrieveLastWallpaper() throws IOException {
+        File lastWallpaperFile = new File(context.getFilesDir(), LAST_WALLPAPER_FILE_NAME);
+        if (lastWallpaperFile.exists() && lastWallpaperFile.length() > 0) {
+            FileInputStream inputStream = null;
+            try {
+                inputStream = context.openFileInput(LAST_WALLPAPER_FILE_NAME);
+                return BitmapFactory.decodeStream(inputStream);
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public void undoLastWallpaperChangeSync() throws IOException {
+        Bitmap bitmap = retrieveLastWallpaper();
+        if (bitmap != null) {
+            WallpaperManager wallpaperMgr = WallpaperManager.getInstance(context);
+            wallpaperMgr.setWallpaperOffsetSteps(0.5f, 1.0f);
+            wallpaperMgr.setBitmap(bitmap);
+        }
     }
 }

@@ -3,12 +3,14 @@ package br.com.dgimenes.nasapic.service;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -20,9 +22,12 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.control.activity.MainActivity;
+import br.com.dgimenes.nasapic.control.activity.SettingsActivity;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 
@@ -32,6 +37,32 @@ public class PeriodicWallpaperChangeService extends JobService {
     private static final String LAST_APOD_CHECK_DAY = "LAST_APOD_CHECK_DAY";
     private static final String LOG_TAG = PeriodicWallpaperChangeService.class.getSimpleName();
     private static final int PERIOD_IN_HOURS = 6;
+    private static final int UNDO_REQUEST_CODE = 458;
+    private static final String UNDO_OPERATION_EXTRA = "UNDO_OPERATION_EXTRA";
+    private static final int NOTIFICATION_ID = 123;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        boolean undoOperation = intent.getExtras().getBoolean(UNDO_OPERATION_EXTRA, false);
+        if (undoOperation) {
+            undoLastWallpaperChange();
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void undoLastWallpaperChange() {
+        try {
+            new ApodInteractor(this).undoLastWallpaperChangeSync();
+        } catch (IOException e) {
+            e.printStackTrace();
+            String undoErrorMessage = getResources().getString(R.string.undo_error_message);
+            Log.e(LOG_TAG, undoErrorMessage);
+            Toast.makeText(this, undoErrorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public static void updatePeriodicWallpaperChangeSetup(Context context) {
         Resources res = context.getResources();
@@ -134,15 +165,37 @@ public class PeriodicWallpaperChangeService extends JobService {
         Context context = PeriodicWallpaperChangeService.this;
         Bitmap largeNotificationBmp =
                 ((BitmapDrawable) getResources().getDrawable(R.mipmap.logo, null)).getBitmap();
+
+        PendingIntent contentPendingIntent = PendingIntent.getActivities(context, 0,
+                new Intent[]{new Intent(context, MainActivity.class)},
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent undoChangeIntent = new Intent(context, PeriodicWallpaperChangeService.class);
+        undoChangeIntent.putExtra(UNDO_OPERATION_EXTRA, true);
+        PendingIntent undoChangePendingIntent = PendingIntent.getService(context, UNDO_REQUEST_CODE,
+                undoChangeIntent, PendingIntent.FLAG_ONE_SHOT);
+        String undoChangeButtonTitle = context.getResources()
+                .getString(R.string.undo_change_button_title);
+
+        PendingIntent settingsPendingIntent = PendingIntent.getActivities(context, 0,
+                new Intent[]{new Intent(context, SettingsActivity.class)},
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        String settingsButtonTitle = context.getResources()
+                .getString(R.string.action_settings);
+
         Notification notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_update_notification)
                 .setLargeIcon(largeNotificationBmp)
                 .setColor(ContextCompat.getColor(context, R.color.palette_primary))
                 .setContentTitle(getResources().getString(R.string.app_name))
-                .setContentText(message).build();
+                .setContentText(message)
+                .setContentIntent(contentPendingIntent)
+                .addAction(R.drawable.ic_undo_change, undoChangeButtonTitle, undoChangePendingIntent)
+                .addAction(R.drawable.ic_settings, settingsButtonTitle, settingsPendingIntent)
+                .build();
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(55, notification);
+        mNotificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     @Override

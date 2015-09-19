@@ -26,4 +26,6 @@
     <string name="periodic_change_notification_preference_title">Notification</string>
     <string name="periodic_change_preference" translatable="false">periodic_change_preference</string>
     <string name="periodic_change_notification_preference" translatable="false">periodic_change_notification_preference</string>
+    <string name="undo_change_button_title">Undo</string>
+    <string name="undo_error_message">Last wallpaper not available :(</string>
 </resources>
