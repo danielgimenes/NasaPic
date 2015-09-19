@@ -1,11 +1,8 @@
 package br.com.dgimenes.nasapic.control.activity;
 
 import android.app.AlertDialog;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
@@ -38,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();
-        setupPeriodicWallpaperChange();
+        PeriodicWallpaperChangeService.updatePeriodicWallpaperChangeSetup(this);
     }
 
     private void setupUI() {
@@ -55,27 +51,6 @@ public class MainActivity extends ActionBarActivity {
                 && getSupportActionBar() != null) {
             tabLayout.setElevation(this.getSupportActionBar().getElevation());
             this.getSupportActionBar().setElevation(0);
-        }
-    }
-
-    private void setupPeriodicWallpaperChange() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            final int PERIOD_IN_HOURS = 6;
-            JobScheduler scheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            if (scheduler.getAllPendingJobs().size() == 0) {
-                ComponentName serviceEndpoint = new ComponentName(this, PeriodicWallpaperChangeService.class);
-                JobInfo wallpaperChangeJob = new JobInfo.Builder(
-                        PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
-                        .setRequiresCharging(false)
-                        .setPersisted(true)
-                        .setRequiresDeviceIdle(true)
-                        .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
-                        .build();
-
-                scheduler.schedule(wallpaperChangeJob);
-                String scheduledMessage = getResources().getString(R.string.periodic_change_scheduled);
-                Toast.makeText(this, scheduledMessage, Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -104,6 +79,11 @@ public class MainActivity extends ActionBarActivity {
                     });
             AlertDialog dialog = builder.create();
             dialog.show();
+            return true;
+        }
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -3,10 +3,14 @@ package br.com.dgimenes.nasapic.service;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.job.JobInfo;
 import android.app.job.JobParameters;
+import android.app.job.JobScheduler;
 import android.app.job.JobService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -14,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -26,6 +31,57 @@ public class PeriodicWallpaperChangeService extends JobService {
     public static final int JOB_ID = 666;
     private static final String LAST_APOD_CHECK_DAY = "LAST_APOD_CHECK_DAY";
     private static final String LOG_TAG = PeriodicWallpaperChangeService.class.getSimpleName();
+    private static final int PERIOD_IN_HOURS = 6;
+
+    public static void updatePeriodicWallpaperChangeSetup(Context context) {
+        Resources res = context.getResources();
+        boolean periodicChangeActivated = PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(res.getString(R.string.periodic_change_preference),
+                        res.getBoolean(R.bool.periodic_change_preference_default_value));
+        if (periodicChangeActivated) {
+            setupIfNeededPeriodicWallpaperChange(context);
+        } else {
+            unschedulePeriodicWallpaperChange(context);
+        }
+    }
+
+    public static void setupIfNeededPeriodicWallpaperChange(Context context) {
+        Resources res = context.getResources();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            JobScheduler scheduler = (JobScheduler) context
+                    .getSystemService(Context.JOB_SCHEDULER_SERVICE);
+
+            if (scheduler.getAllPendingJobs().size() == 0) {
+                ComponentName serviceEndpoint = new ComponentName(context,
+                        PeriodicWallpaperChangeService.class);
+                JobInfo wallpaperChangeJob = new JobInfo.Builder(
+                        PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
+                        .setRequiresCharging(false)
+                        .setPersisted(true)
+                        .setRequiresDeviceIdle(true)
+                        .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
+                        .build();
+
+                scheduler.schedule(wallpaperChangeJob);
+                String scheduledMessage = res.getString(R.string.periodic_change_scheduled);
+                Toast.makeText(context, scheduledMessage, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public static void unschedulePeriodicWallpaperChange(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            JobScheduler scheduler = (JobScheduler) context
+                    .getSystemService(Context.JOB_SCHEDULER_SERVICE);
+
+            if (scheduler.getAllPendingJobs().size() > 0) {
+                scheduler.cancelAll();
+                String unscheduledMessage = context.getResources()
+                        .getString(R.string.periodic_change_unscheduled);
+                Toast.makeText(context, unscheduledMessage, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     public boolean onStartJob(JobParameters params) {
@@ -36,7 +92,16 @@ public class PeriodicWallpaperChangeService extends JobService {
                 public void onSuccess(Void result) {
                     String successMessage = PeriodicWallpaperChangeService.this.getResources()
                             .getString(R.string.periodic_change_sucess);
-                    createNotification(successMessage);
+                    Resources res = getResources();
+                    boolean notificationEnabled = PreferenceManager
+                            .getDefaultSharedPreferences(PeriodicWallpaperChangeService.this)
+                            .getBoolean(
+                                    res.getString(R.string.periodic_change_notification_preference),
+                                    res.getBoolean(R.bool
+                                            .periodic_change_notification_preference_default_value));
+                    if (notificationEnabled) {
+                        createNotification(successMessage);
+                    }
                     SharedPreferences.Editor editor = PreferenceManager
                             .getDefaultSharedPreferences(PeriodicWallpaperChangeService.this)
                             .edit();

@@ -15,5 +15,15 @@
     <string name="periodic_change_sucess">Wallpaper changed</string>
     <string name="periodic_change_error">Error downloading wallpaper</string>
     <string name="periodic_change_stopping_service">NasaPic PeriodicWallpaperChangeService stopping...</string>
-    <string name="periodic_change_scheduled">Daily wallpaper change configured</string>
+    <string name="periodic_change_scheduled">Daily wallpaper change enabled</string>
+    <string name="periodic_change_unscheduled">Daily wallpaper change disabled</string>
+    <string name="settings_activity_title">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="periodic_change_preference_summary_text_off">Disabled</string>
+    <string name="periodic_change_preference_summary_text_on">Enabled</string>
+    <string name="periodic_change_preference_title">Daily wallpaper change</string>
+    <string name="periodic_change_notification_preference_summary">Show notification with "undo" option</string>
+    <string name="periodic_change_notification_preference_title">Notification</string>
+    <string name="periodic_change_preference" translatable="false">periodic_change_preference</string>
+    <string name="periodic_change_notification_preference" translatable="false">periodic_change_notification_preference</string>
 </resources>

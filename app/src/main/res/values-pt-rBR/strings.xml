@@ -14,6 +14,13 @@
     <string name="best_pics_tab_title">Melhores</string>
     <string name="periodic_change_sucess">Papel de parede alterado</string>
     <string name="periodic_change_error">Erro baixando papel de parede</string>
-    <string name="periodic_change_stopping_service">NasaPic PeriodicWallpaperChangeService stopping...</string>
-    <string name="periodic_change_scheduled">Troca diária configurada</string>
+    <string name="periodic_change_scheduled">Troca diária de papel de parede ativada</string>
+    <string name="periodic_change_unscheduled">Troca diária de papel de parede desativada</string>
+    <string name="settings_activity_title">Configurações</string>
+    <string name="action_settings">Configurações</string>
+    <string name="periodic_change_preference_summary_text_off">Desativada</string>
+    <string name="periodic_change_preference_summary_text_on">Ativiada</string>
+    <string name="periodic_change_preference_title">Troca diária de Papel de Parede</string>
+    <string name="periodic_change_notification_preference_summary">Mostrar notificação com opção "desfazer"</string>
+    <string name="periodic_change_notification_preference_title">Notificação</string>
 </resources>
