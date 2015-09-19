@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.adapter;
+package br.com.dgimenes.nasapic.control.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.fragment.BestPicturesTabFragment;
-import br.com.dgimenes.nasapic.fragment.RecentTabFragment;
+import br.com.dgimenes.nasapic.control.fragment.BestPicturesTabFragment;
+import br.com.dgimenes.nasapic.control.fragment.RecentTabFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
 

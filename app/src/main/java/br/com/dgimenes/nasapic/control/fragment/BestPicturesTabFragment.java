@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.fragment;
+package br.com.dgimenes.nasapic.control.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.adapter.BestPicturesAdapter;
+import br.com.dgimenes.nasapic.control.adapter.BestPicturesAdapter;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.view.LoadingDialog;

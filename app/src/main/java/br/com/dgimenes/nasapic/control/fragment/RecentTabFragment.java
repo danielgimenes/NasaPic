@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.fragment;
+package br.com.dgimenes.nasapic.control.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.adapter.APODPictureAdapter;
+import br.com.dgimenes.nasapic.control.adapter.APODPictureAdapter;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.view.LoadingDialog;

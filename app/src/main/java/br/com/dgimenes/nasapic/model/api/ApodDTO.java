@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.webservice;
+package br.com.dgimenes.nasapic.model.api;
 
 import com.google.gson.annotations.SerializedName;
 

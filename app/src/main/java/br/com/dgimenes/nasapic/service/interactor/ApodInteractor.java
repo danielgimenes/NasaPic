@@ -17,9 +17,9 @@ import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
+import br.com.dgimenes.nasapic.model.api.ApodDTO;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
-import br.com.dgimenes.nasapic.webservice.ApodDTO;
-import br.com.dgimenes.nasapic.webservice.NasaWebservice;
+import br.com.dgimenes.nasapic.service.web.NasaWebservice;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -46,7 +46,7 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
             @Override
             public void success(ApodDTO apodDTO, Response response) {
                 if (apodDTO.getMediaType() == null) {
-                    String errorMessage = "Invalid response. Response: " +
+                    String errorMessage = "Invalid response media type. Response: " +
                             response.getStatus() + " " + response.getReason();
                     Log.e(ApodInteractor.class.getSimpleName(), errorMessage);
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();

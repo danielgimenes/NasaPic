@@ -1,34 +1,36 @@
-package br.com.dgimenes.nasapic.adapter;
+package br.com.dgimenes.nasapic.control.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import br.com.dgimenes.nasapic.fragment.SinglePictureFragment;
+import br.com.dgimenes.nasapic.control.fragment.SinglePictureFragment;
 
-public class BestPicturesAdapter extends FragmentStatePagerAdapter {
+public class APODPictureAdapter extends FragmentStatePagerAdapter {
 
-    private final List<Date> bestPicsDates;
+    private final int numOfDaysToShow;
 
     private Map<Integer, SinglePictureFragment> fragmentPerPosition;
 
-    public BestPicturesAdapter(FragmentManager supportFragmentManager, List<Date> bestPicsDates) {
+    public APODPictureAdapter(FragmentManager supportFragmentManager, int numOfDaysToShow) {
         super(supportFragmentManager);
-        this.bestPicsDates = bestPicsDates;
+        this.numOfDaysToShow = numOfDaysToShow;
         fragmentPerPosition = new HashMap<>();
     }
 
     @Override
     public Fragment getItem(int position) {
+        int dateOffset = position * -1;
         SinglePictureFragment fragment = new SinglePictureFragment();
+        Calendar calendar= Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, dateOffset);
         Bundle bundle = new Bundle();
-        bundle.putLong(SinglePictureFragment.DATE_PARAM, bestPicsDates.get(position).getTime());
+        bundle.putLong(SinglePictureFragment.DATE_PARAM, calendar.getTime().getTime());
         fragment.setArguments(bundle);
         fragmentPerPosition.put(position, fragment);
         return fragment;
@@ -40,7 +42,7 @@ public class BestPicturesAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return bestPicsDates.size();
+        return numOfDaysToShow;
     }
 
 }

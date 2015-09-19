@@ -1,5 +1,6 @@
-package br.com.dgimenes.nasapic.webservice;
+package br.com.dgimenes.nasapic.service.web;
 
+import br.com.dgimenes.nasapic.model.api.ApodDTO;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;

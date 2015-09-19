@@ -1,36 +1,35 @@
-package br.com.dgimenes.nasapic.adapter;
+package br.com.dgimenes.nasapic.control.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import br.com.dgimenes.nasapic.fragment.SinglePictureFragment;
+import br.com.dgimenes.nasapic.control.fragment.SinglePictureFragment;
 
-public class APODPictureAdapter extends FragmentStatePagerAdapter {
 
-    private final int numOfDaysToShow;
+public class BestPicturesAdapter extends FragmentStatePagerAdapter {
+
+    private final List<Date> bestPicsDates;
 
     private Map<Integer, SinglePictureFragment> fragmentPerPosition;
 
-    public APODPictureAdapter(FragmentManager supportFragmentManager, int numOfDaysToShow) {
+    public BestPicturesAdapter(FragmentManager supportFragmentManager, List<Date> bestPicsDates) {
         super(supportFragmentManager);
-        this.numOfDaysToShow = numOfDaysToShow;
+        this.bestPicsDates = bestPicsDates;
         fragmentPerPosition = new HashMap<>();
     }
 
     @Override
     public Fragment getItem(int position) {
-        int dateOffset = position * -1;
         SinglePictureFragment fragment = new SinglePictureFragment();
-        Calendar calendar= Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, dateOffset);
         Bundle bundle = new Bundle();
-        bundle.putLong(SinglePictureFragment.DATE_PARAM, calendar.getTime().getTime());
+        bundle.putLong(SinglePictureFragment.DATE_PARAM, bestPicsDates.get(position).getTime());
         fragment.setArguments(bundle);
         fragmentPerPosition.put(position, fragment);
         return fragment;
@@ -42,7 +41,7 @@ public class APODPictureAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return numOfDaysToShow;
+        return bestPicsDates.size();
     }
 
 }

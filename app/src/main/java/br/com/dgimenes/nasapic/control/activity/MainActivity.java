@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.activity;
+package br.com.dgimenes.nasapic.control.activity;
 
 import android.app.AlertDialog;
 import android.app.job.JobInfo;
@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.adapter.TabPagerAdapter;
+import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
 import br.com.dgimenes.nasapic.service.PeriodicWallpaperChangeService;
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package br.com.dgimenes.nasapic.fragment;
+package br.com.dgimenes.nasapic.control.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.activity.ImageZoomActivity;
+import br.com.dgimenes.nasapic.control.activity.ImageZoomActivity;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
