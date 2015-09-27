@@ -65,20 +65,22 @@ public class PeriodicWallpaperChangeService extends JobService {
     }
 
     public static void updatePeriodicWallpaperChangeSetup(Context context) {
-        Resources res = context.getResources();
-        boolean periodicChangeActivated = PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(res.getString(R.string.periodic_change_preference),
-                        res.getBoolean(R.bool.periodic_change_preference_default_value));
-        if (periodicChangeActivated) {
-            setupIfNeededPeriodicWallpaperChange(context);
-        } else {
-            unschedulePeriodicWallpaperChange(context);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Resources res = context.getResources();
+            boolean periodicChangeActivated = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getBoolean(res.getString(R.string.periodic_change_preference),
+                            res.getBoolean(R.bool.periodic_change_preference_default_value));
+            if (periodicChangeActivated) {
+                setupIfNeededPeriodicWallpaperChange(context);
+            } else {
+                unschedulePeriodicWallpaperChange(context);
+            }
         }
     }
 
     public static void setupIfNeededPeriodicWallpaperChange(Context context) {
-        Resources res = context.getResources();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Resources res = context.getResources();
             JobScheduler scheduler = (JobScheduler) context
                     .getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
@@ -164,7 +166,7 @@ public class PeriodicWallpaperChangeService extends JobService {
     private void createNotification(CharSequence message) {
         Context context = PeriodicWallpaperChangeService.this;
         Bitmap largeNotificationBmp =
-                ((BitmapDrawable) getResources().getDrawable(R.mipmap.logo, null)).getBitmap();
+                ((BitmapDrawable) getResources().getDrawable(R.mipmap.logo)).getBitmap();
 
         PendingIntent contentPendingIntent = PendingIntent.getActivities(context, 0,
                 new Intent[]{new Intent(context, MainActivity.class)},

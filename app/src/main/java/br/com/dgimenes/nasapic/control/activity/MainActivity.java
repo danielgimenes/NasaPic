@@ -34,7 +34,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();
-        PeriodicWallpaperChangeService.updatePeriodicWallpaperChangeSetup(this);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            PeriodicWallpaperChangeService.updatePeriodicWallpaperChangeSetup(this);
+        }
     }
 
     private void setupUI() {
