@@ -90,6 +90,7 @@ public class PeriodicWallpaperChangeService extends JobService {
                 JobInfo wallpaperChangeJob = new JobInfo.Builder(
                         PeriodicWallpaperChangeService.JOB_ID, serviceEndpoint)
                         .setRequiresCharging(false)
+                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                         .setPersisted(true)
                         .setRequiresDeviceIdle(true)
                         .setPeriodic(PERIOD_IN_HOURS * 60 * 60 * 1000)
