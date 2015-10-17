@@ -21,10 +21,11 @@
     <string name="periodic_change_preference_summary_text_off">Disabled</string>
     <string name="periodic_change_preference_summary_text_on">Enabled</string>
     <string name="periodic_change_preference_title">Daily wallpaper change</string>
-    <string name="periodic_change_notification_preference_summary">Show notification with "undo" option</string>
-    <string name="periodic_change_notification_preference_title">Notification</string>
+    <string name="notification_preference_summary">Show notification with "undo" option</string>
+    <string name="notification_preference_title">Notification</string>
     <string name="periodic_change_preference" translatable="false">periodic_change_preference</string>
-    <string name="periodic_change_notification_preference" translatable="false">periodic_change_notification_preference</string>
+    <string name="notification_preference" translatable="false">notification_preference</string>
     <string name="undo_change_button_title">Undo</string>
     <string name="undo_error_message">Last wallpaper not available :(</string>
+    <string name="periodic_change_preference_group_title">Automatic Wallpaper Change</string>
 </resources>

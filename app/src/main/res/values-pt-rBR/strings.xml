@@ -21,8 +21,9 @@
     <string name="periodic_change_preference_summary_text_off">Desativada</string>
     <string name="periodic_change_preference_summary_text_on">Ativada</string>
     <string name="periodic_change_preference_title">Troca diária de Papel de Parede</string>
-    <string name="periodic_change_notification_preference_summary">Mostrar notificação com opção "desfazer"</string>
-    <string name="periodic_change_notification_preference_title">Notificação</string>
+    <string name="notification_preference_summary">Mostrar notificação com opção "desfazer"</string>
+    <string name="notification_preference_title">Notificação</string>
     <string name="undo_change_button_title">Desfazer</string>
     <string name="undo_error_message">Último papel de parede não está disponível :(</string>
+    <string name="periodic_change_preference_group_title">Troca Automática</string>
 </resources>

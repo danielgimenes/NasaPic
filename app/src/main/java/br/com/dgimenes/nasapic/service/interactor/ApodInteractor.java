@@ -2,6 +2,7 @@ package br.com.dgimenes.nasapic.service.interactor;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -24,6 +25,7 @@ import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.model.api.ApodDTO;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
+import br.com.dgimenes.nasapic.service.WallpaperChangeNotification;
 import br.com.dgimenes.nasapic.service.web.NasaWebservice;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -152,6 +154,10 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                     @Override
                     protected void onPostExecute(Boolean success) {
                         if (success) {
+                            Resources res = ApodInteractor.this.context.getResources();
+                            String successMessage = res.getString(R.string.periodic_change_sucess);
+                            WallpaperChangeNotification.createNotification(
+                                        ApodInteractor.this.context, successMessage);
                             onFinishListener.onSuccess(null);
                         } else {
                             onFinishListener.onError(null);

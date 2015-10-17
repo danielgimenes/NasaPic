@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="@bool/notification_preference_default_value"
+        android:key="@string/notification_preference"
+        android:summary="@string/notification_preference_summary"
+        android:title="@string/notification_preference_title" />
+
     <PreferenceCategory
-        android:title="Automatic Wallpaper Change">
+        android:title="@string/periodic_change_preference_group_title">
 
         <SwitchPreference
             android:defaultValue="@bool/periodic_change_preference_default_value"
@@ -9,13 +15,6 @@
             android:summaryOff="@string/periodic_change_preference_summary_text_off"
             android:summaryOn="@string/periodic_change_preference_summary_text_on"
             android:title="@string/periodic_change_preference_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="@bool/periodic_change_notification_preference_default_value"
-            android:key="@string/periodic_change_notification_preference"
-            android:summary="@string/periodic_change_notification_preference_summary"
-            android:title="@string/periodic_change_notification_preference_title"
-            android:dependency="periodic_change_preference" />
-
     </PreferenceCategory>
+
 </PreferenceScreen>
