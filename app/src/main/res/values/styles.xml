@@ -2,10 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/palette_primary</item>
-        <item name="colorPrimaryDark">@color/palette_primary_dark</item>
-        <item name="colorAccent">@color/palette_highlight</item>
-        <item name="android:windowBackground">@color/palette_background</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
@@ -22,8 +22,8 @@
     </style>
 
     <style name="AppTheme.Button" parent="Base.Widget.AppCompat.Button">
-        <item name="android:background">@color/palette_highlight</item>
-        <item name="background">@color/palette_highlight</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="background">@color/colorAccent</item>
         <item name="android:textColor">?android:textColorPrimaryInverse</item>
         <item name="android:padding">10dp</item>
     </style>

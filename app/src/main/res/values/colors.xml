@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="palette_background">#D8DBE2</color>
-    <color name="palette_primary">#373c57</color>
-    <color name="palette_primary_dark">#222847</color>
-    <color name="palette_highlight">#456ea8</color>
+    <color name="colorBackground">#e8eaf6</color>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#283593</color>
+    <color name="colorAccent">#0091ea</color>
     <color name="palette_darkest">#071013</color>
     <color name="palette_brightest">#FFF</color>
 </resources>

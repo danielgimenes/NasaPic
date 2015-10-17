@@ -1,11 +1,11 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/palette_primary</item>
-        <item name="colorPrimaryDark">@color/palette_primary_dark</item>
-        <item name="colorAccent">@color/palette_highlight</item>
-        <item name="android:windowBackground">@color/palette_background</item>
-        <item name="android:navigationBarColor">@color/palette_primary_dark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="ImageZoomTheme" parent="AppTheme">

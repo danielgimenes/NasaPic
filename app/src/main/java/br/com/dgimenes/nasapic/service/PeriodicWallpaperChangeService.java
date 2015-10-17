@@ -189,7 +189,7 @@ public class PeriodicWallpaperChangeService extends JobService {
         Notification notification = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_update_notification)
                 .setLargeIcon(largeNotificationBmp)
-                .setColor(ContextCompat.getColor(context, R.color.palette_primary))
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setContentTitle(getResources().getString(R.string.app_name))
                 .setContentText(message)
                 .setContentIntent(contentPendingIntent)
