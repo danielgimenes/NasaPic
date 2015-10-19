@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
@@ -28,6 +29,9 @@ public class MainActivity extends ActionBarActivity {
 
     private TabPagerAdapter tabPagerAdapter;
 
+    @Bind(R.id.main_toolbar)
+    Toolbar mainToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +44,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupUI() {
+        setSupportActionBar(mainToolbar);
         tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this);
         tabPager.setAdapter(tabPagerAdapter);
         int i = 0;
