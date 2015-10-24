@@ -1,20 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:layout_height="308dp"
+    android:layout_gravity="center"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/url"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/apod_preview_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:scaleType="center"
+            android:src="@drawable/demo_image" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/apod_preview_image"
+            android:layout_marginTop="-48dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:background="#88000000"
+            android:textColor="#FFF"
+            android:textSize="24dp"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="8dp"
+            android:textColor="#FFF"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/explanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/apod_preview_image"
+            android:textColor="#888"
+            android:padding="8dp"
+            android:textSize="16dp"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
