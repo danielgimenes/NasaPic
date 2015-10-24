@@ -11,6 +11,8 @@ import java.util.List;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.model.APOD;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHolder> {
 
@@ -20,15 +22,19 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat(APOD_DATE_FORMAT);
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.date)
         public TextView dateTextView;
+
+        @Bind(R.id.title)
         public TextView titleTextView;
+
+        @Bind(R.id.url)
         public TextView urlTextView;
 
         public ViewHolder(View rootView) {
             super(rootView);
-            dateTextView = (TextView) rootView.findViewById(R.id.date);
-            titleTextView = (TextView) rootView.findViewById(R.id.title);
-            urlTextView = (TextView) rootView.findViewById(R.id.url);
+            ButterKnife.bind(this, rootView);
         }
     }
 
@@ -48,7 +54,7 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
         APOD apod = dataset.get(position);
         viewHolder.dateTextView.setText(dateFormatter.format(apod.getDate()));
         viewHolder.titleTextView.setText(apod.getTitle());
-        viewHolder.urlTextView.setText(apod.getTitle());
+        viewHolder.urlTextView.setText(apod.getUrl());
     }
 
     @Override

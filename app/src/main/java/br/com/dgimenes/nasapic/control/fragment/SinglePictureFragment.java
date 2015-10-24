@@ -25,12 +25,19 @@ import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.view.LoadingDialog;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class SinglePictureFragment extends Fragment {
 
     public static final String DATE_PARAM = "DATE_PARAM";
-    private ImageView previewImageView;
-    private TextView errorMessageTextView;
+
+    @Bind(R.id.apod_preview_image)
+    ImageView previewImageView;
+
+    @Bind(R.id.error_message)
+    TextView errorMessageTextView;
+
     private String pictureUrl;
     private LoadingDialog loadingDialog;
     private ApodInteractor apodInteractor;
@@ -40,9 +47,8 @@ public class SinglePictureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_apod_page, container, false);
+        ButterKnife.bind(this, rootView);
         Date date = new Date(getArguments().getLong(DATE_PARAM));
-        previewImageView = (ImageView) rootView.findViewById(R.id.apod_preview_image);
-        errorMessageTextView = (TextView) rootView.findViewById(R.id.error_message);
         loadingDialog = new LoadingDialog(getActivity());
         apodInteractor = new ApodInteractor(getActivity());
         loadNasaAPOD(date);

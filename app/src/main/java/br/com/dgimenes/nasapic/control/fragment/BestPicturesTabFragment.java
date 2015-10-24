@@ -19,11 +19,15 @@ import br.com.dgimenes.nasapic.control.adapter.BestPicturesAdapter;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.view.LoadingDialog;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class BestPicturesTabFragment extends Fragment {
 
+    @Bind(R.id.best_pics_set_wallpaper_button)
     Button setWallpaperButton;
 
+    @Bind(R.id.best_pics_pager)
     ViewPager bestPicsPager;
 
     private BestPicturesAdapter bestPicsPagerAdapter;
@@ -51,8 +55,7 @@ public class BestPicturesTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_best_pics_tab, container, false);
-        setWallpaperButton = (Button) rootView.findViewById(R.id.best_pics_set_wallpaper_button);
-        bestPicsPager = (ViewPager) rootView.findViewById(R.id.best_pics_pager);
+        ButterKnife.bind(this, rootView);
         apodInteractor = new ApodInteractor(getActivity());
         setupUI();
         return rootView;
