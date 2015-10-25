@@ -39,7 +39,6 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-
     public static class SettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
