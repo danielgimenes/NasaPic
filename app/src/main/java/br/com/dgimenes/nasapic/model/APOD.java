@@ -8,13 +8,6 @@ public class APOD {
     private String title;
     private Date date;
 
-    public APOD(String url, String explanation, String title, Date date) {
-        this.url = url;
-        this.explanation = explanation;
-        this.title = title;
-        this.date = date;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -29,5 +22,37 @@ public class APOD {
 
     public Date getDate() {
         return date;
+    }
+
+    public static class Builder {
+        private final APOD instance;
+
+        public Builder() {
+            instance = new APOD();
+        }
+
+        public Builder url(String url) {
+            instance.url = url;
+            return this;
+        }
+
+        public Builder explanation(String explanation) {
+            instance.explanation = explanation;
+            return this;
+        }
+
+        public Builder title(String title) {
+            instance.title = title;
+            return this;
+        }
+
+        public Builder date(Date date) {
+            instance.date = date;
+            return this;
+        }
+
+        public APOD build() {
+            return instance;
+        }
     }
 }
