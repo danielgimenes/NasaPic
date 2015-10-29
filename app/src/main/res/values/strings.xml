@@ -28,4 +28,6 @@
     <string name="undo_change_button_title">Undo</string>
     <string name="undo_error_message">Last wallpaper not available :(</string>
     <string name="periodic_change_preference_group_title">Automatic Wallpaper Change</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 </resources>
