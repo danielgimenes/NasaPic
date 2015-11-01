@@ -1,35 +1,33 @@
 package br.com.dgimenes.nasapic.control.activity;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.model.APOD;
+import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ImageZoomActivity extends AppCompatActivity {
 
-    public static final String IMAGE_PATH_PARAM = "IMAGE_PATH_PARAM";
+    public static final String APOD_OBJECT_PARAM = "APOD_OBJECT_PARAM";
 
     @Bind(R.id.image_view)
     ImageView imageView;
 
     @Bind(R.id.progress_bar)
     ProgressBar progressBar;
+
+    private APOD apod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,36 +37,25 @@ public class ImageZoomActivity extends AppCompatActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         ButterKnife.bind(this);
-        String imagePath = getIntent().getExtras().getString(ImageZoomActivity.IMAGE_PATH_PARAM);
-        loadImageAsync(imagePath);
+        apod = getIntent().getExtras().getParcelable(ImageZoomActivity.APOD_OBJECT_PARAM);
+        loadImageAsync();
     }
 
-    private void loadImageAsync(String imagePath) {
-        new AsyncTask<String, Void, BitmapDrawable>() {
-
+    private void loadImageAsync() {
+        Picasso picasso = DefaultPicasso.get(this, null);
+        picasso.load(apod.getUrl()).into(imageView, new Callback() {
             @Override
-            protected BitmapDrawable doInBackground(String... params) {
-                try {
-                    if (ImageZoomActivity.this != null) {
-                        Bitmap bitmap = BitmapFactory.decodeStream(ImageZoomActivity.this.openFileInput(params[0]));
-                        return new BitmapDrawable(getResources(), bitmap);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                return null;
+            public void onSuccess() {
+                progressBar.setVisibility(View.GONE);
+                imageView.setVisibility(View.VISIBLE);
             }
 
             @Override
-            protected void onPostExecute(BitmapDrawable drawable) {
-                if (drawable != null) {
-                    imageView.setImageDrawable(drawable);
-                    progressBar.setVisibility(View.GONE);
-                    imageView.setVisibility(View.VISIBLE);
-                }
+            public void onError() {
+                String errorMessage = getResources().getString(R.string.error_downloading_apod);
+                Toast.makeText(ImageZoomActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
-        }.execute(imagePath);
-
+        });
     }
 
     @Override
@@ -79,15 +66,5 @@ public class ImageZoomActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public static String saveImageOnDiskTemporarily(Context context, Bitmap bitmap) throws IOException {
-        String fileName = "tmp_image";
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        FileOutputStream fo = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-        fo.write(bytes.toByteArray());
-        fo.close();
-        return fileName;
     }
 }

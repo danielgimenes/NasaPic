@@ -1,8 +1,5 @@
 package br.com.dgimenes.nasapic.control.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,11 +12,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.control.activity.ImageZoomActivity;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
 import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
@@ -57,35 +52,35 @@ public class SinglePictureFragment extends Fragment {
     }
 
     private void setupImageZooming() {
-        previewImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Activity activity = SinglePictureFragment.this.getActivity();
-                loadingDialog.show();
-                apodInteractor.downloadPictureAndDecodeInWallpaperSize(pictureUrl,
-                        new OnFinishListener<Bitmap>() {
-                            @Override
-                            public void onSuccess(Bitmap bmp) {
-                                try {
-                                    String path = ImageZoomActivity
-                                            .saveImageOnDiskTemporarily(activity, bmp);
-                                    Intent intent = new Intent(activity, ImageZoomActivity.class);
-                                    intent.putExtra(ImageZoomActivity.IMAGE_PATH_PARAM, path);
-                                    activity.startActivity(intent);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                loadingDialog.dismiss();
-                            }
-
-                            @Override
-                            public void onError(Throwable throwable) {
-                                displayErrorMessage(R.string.error_loading_apod);
-                                loadingDialog.dismiss();
-                            }
-                        });
-            }
-        });
+//        previewImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Activity activity = SinglePictureFragment.this.getActivity();
+//                loadingDialog.show();
+//                apodInteractor.downloadPictureAndDecodeInWallpaperSize(pictureUrl,
+//                        new OnFinishListener<Bitmap>() {
+//                            @Override
+//                            public void onSuccess(Bitmap bmp) {
+//                                try {
+//                                    String path = ImageZoomActivity
+//                                            .saveImageOnDiskTemporarily(activity, bmp);
+//                                    Intent intent = new Intent(activity, ImageZoomActivity.class);
+//                                    intent.putExtra(ImageZoomActivity.IMAGE_PATH_PARAM, path);
+//                                    activity.startActivity(intent);
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                loadingDialog.dismiss();
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable throwable) {
+//                                displayErrorMessage(R.string.error_loading_apod);
+//                                loadingDialog.dismiss();
+//                            }
+//                        });
+//            }
+//        });
     }
 
     private void loadNasaAPOD(Date date) {

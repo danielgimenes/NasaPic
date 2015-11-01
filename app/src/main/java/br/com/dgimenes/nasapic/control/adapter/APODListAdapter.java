@@ -1,6 +1,7 @@
 package br.com.dgimenes.nasapic.control.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.control.activity.ImageZoomActivity;
 import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.util.DateUtils;
@@ -87,6 +89,7 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
         viewHolder.explanationTextView.setText(
                 StringUtils.addQuotes(apod.getExplanation()));
         viewHolder.apodPreviewImageView.setTag(apod.getUrl());
+        viewHolder.itemView.setOnClickListener(new OnCardClickListener(contextWeak.get(), apod));
     }
 
     @Override
@@ -126,6 +129,23 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
 
         @Override
         public void onError() {
+        }
+    }
+
+    private class OnCardClickListener implements View.OnClickListener {
+        private APOD apod;
+        private WeakReference<Context> contextWeak;
+
+        public OnCardClickListener(Context context, APOD apod) {
+            this.apod = apod;
+            this.contextWeak = new WeakReference<>(context);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(contextWeak.get(), ImageZoomActivity.class);
+            intent.putExtra(ImageZoomActivity.APOD_OBJECT_PARAM, apod);
+            contextWeak.get().startActivity(intent);
         }
     }
 }
