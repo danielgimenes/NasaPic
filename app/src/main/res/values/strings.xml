@@ -30,4 +30,5 @@
     <string name="periodic_change_preference_group_title">Automatic Wallpaper Change</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="loading_more_apods">Loading more pictures...</string>
 </resources>

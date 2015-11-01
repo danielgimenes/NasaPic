@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,13 +31,19 @@ import butterknife.ButterKnife;
 
 public class RecentPicturesFragment extends Fragment implements APODListAdapter.ErrorListener {
 
+    private static final int LIST_PAGE_SIZE = 10;
+    private static final String LOG_TAG = RecentPicturesFragment.class.getName();
+    
     @Bind(R.id.recent_pics_recycler_view)
     RecyclerView recyclerView;
 
     private RecyclerView.Adapter recyclerViewAdapter;
+
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
     private List<APOD> apods;
+    private Date nextDateToLoad;
+    private boolean loadingAPODs = false;
 
     @Nullable
     @Override
@@ -58,40 +65,24 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
         recyclerViewAdapter = new APODListAdapter(getActivity(), apods, this, getDisplayWidth());
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        loadAPOD(Calendar.getInstance().getTime(), 10);
-
-//        setWallpaperButton.setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        loadingDialog.show();
-//                        String pictureUrl = apodPagerAdapter.getFragment(apodPager.getCurrentItem())
-//                                .getPictureUrl();
-//                        apodInteractor.setWallpaper(pictureUrl, new OnFinishListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void none) {
-//                                displayToastMessage(getString(R.string.wallpaper_set));
-//                                loadingDialog.dismiss();
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable throwable) {
-//                                loadingDialog.dismiss();
-//                                displayToastMessage(
-//                                        getString(R.string.error_setting_wallpaper));
-//                            }
-//                        });
-//                    }
-//                }
-//        );
+        nextDateToLoad = Calendar.getInstance().getTime();
+        loadAPOD(LIST_PAGE_SIZE);
     }
 
-    private void loadAPOD(final Date date, final int daysToLoad) {
+    private void loadAPOD(final int daysToLoad) {
+        if (!loadingAPODs) {
+            loadingAPODs = true;
+        }
+        if (nextDateToLoad == null) {
+            return;
+        }
         if (daysToLoad == 0) {
+            loadingAPODs = false;
+            setupInfiniteScroll();
             return;
         }
         ApodInteractor apodInteractor = new ApodInteractor(getActivity());
-        apodInteractor.getNasaApod(date, new OnFinishListener<APOD>() {
+        apodInteractor.getNasaApod(nextDateToLoad, new OnFinishListener<APOD>() {
             @Override
             public void onSuccess(APOD apod) {
                 apods.add(apod);
@@ -102,23 +93,46 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
             @Override
             public void onError(Throwable throwable) {
                 error("Error loading APOD of day " +
-                        new SimpleDateFormat("yyyy-MM-dd").format(date));
+                        new SimpleDateFormat("yyyy-MM-dd").format(nextDateToLoad));
                 loadNextAPOD();
             }
 
             private void loadNextAPOD() {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                cal.add(Calendar.DAY_OF_MONTH, -1);
-                loadAPOD(cal.getTime(), daysToLoad - 1);
+                advanceNextDateToLoad();
+                loadAPOD(daysToLoad - 1);
             }
         });
+    }
 
+    private void advanceNextDateToLoad() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(nextDateToLoad);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        nextDateToLoad = cal.getTime();
+    }
+
+    private void setupInfiniteScroll() {
+        recyclerView.clearOnScrollListeners();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                boolean canScrollDown = recyclerView.canScrollVertically(1);
+                synchronized (this) {
+                    if (!canScrollDown && !loadingAPODs) {
+                        String loadingMessage =
+                                getResources().getString(R.string.loading_more_apods);
+                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_SHORT).show();
+                        loadAPOD(LIST_PAGE_SIZE);
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void error(String errorMessage) {
-        Snackbar.make(recyclerView, errorMessage, Snackbar.LENGTH_SHORT).show();
+        // Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        Log.d(LOG_TAG, errorMessage);
     }
 
     public int getDisplayWidth() {
