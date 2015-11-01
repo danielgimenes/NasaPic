@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -45,6 +47,9 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
         @Bind(R.id.apod_preview_image)
         public ImageView apodPreviewImageView;
 
+        @Bind(R.id.loading_indicator)
+        public ProgressBar loadingIndicator;
+
         public ViewHolder(View cardView) {
             super(cardView);
             ButterKnife.bind(this, cardView);
@@ -74,6 +79,7 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        viewHolder.loadingIndicator.setVisibility(View.VISIBLE);
         APOD apod = dataset.get(position);
         viewHolder.dateTextView.setText(
                 DateUtils.friendlyDateString(contextWeak.get(), apod.getDate()));
@@ -86,7 +92,8 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
     @Override
     public void onViewAttachedToWindow(ViewHolder viewHolder) {
         String src = (String) viewHolder.apodPreviewImageView.getTag();
-        picasso.load(src).resize(listWidth, 0).into(viewHolder.apodPreviewImageView);
+        picasso.load(src).resize(listWidth, 0).into(viewHolder.apodPreviewImageView,
+                new AfterLoadingImageCallback(viewHolder.loadingIndicator));
     }
 
     private void displayErrorMessage(int errorMessageResource) {
@@ -103,5 +110,22 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
 
     public interface ErrorListener {
         void error(String errorMessage);
+    }
+
+    private class AfterLoadingImageCallback implements Callback {
+        private ProgressBar loadingIndicator;
+
+        public AfterLoadingImageCallback(ProgressBar loadingIndicator) {
+            this.loadingIndicator = loadingIndicator;
+        }
+
+        @Override
+        public void onSuccess() {
+            loadingIndicator.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onError() {
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,9 +34,12 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
 
     private static final int LIST_PAGE_SIZE = 10;
     private static final String LOG_TAG = RecentPicturesFragment.class.getName();
-    
+
     @Bind(R.id.recent_pics_recycler_view)
     RecyclerView recyclerView;
+
+    @Bind(R.id.list_loading_indicator)
+    ProgressBar listLoadingIndicator;
 
     private RecyclerView.Adapter recyclerViewAdapter;
 
@@ -98,6 +102,11 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
             }
 
             private void loadNextAPOD() {
+                if (recyclerView.getVisibility() == View.GONE) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    listLoadingIndicator.setVisibility(View.GONE);
+
+                }
                 advanceNextDateToLoad();
                 loadAPOD(daysToLoad - 1);
             }
