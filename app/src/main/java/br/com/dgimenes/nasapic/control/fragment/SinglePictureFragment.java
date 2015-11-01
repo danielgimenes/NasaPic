@@ -21,6 +21,7 @@ import java.util.Date;
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.activity.ImageZoomActivity;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
+import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
@@ -89,12 +90,12 @@ public class SinglePictureFragment extends Fragment {
 
     private void loadNasaAPOD(Date date) {
         setLoadingImage();
-        new ApodInteractor(getActivity()).getNasaApodPictureURI(date, new OnFinishListener<String>() {
+        new ApodInteractor(getActivity()).getNasaApod(date, new OnFinishListener<APOD>() {
 
             @Override
-            public void onSuccess(String pictureUrl) {
-                SinglePictureFragment.this.pictureUrl = pictureUrl;
-                downloadAndSetPicture(pictureUrl);
+            public void onSuccess(APOD apod) {
+                SinglePictureFragment.this.pictureUrl = apod.getUrl();
+                downloadAndSetPicture(apod.getUrl());
                 setupImageZooming();
             }
 

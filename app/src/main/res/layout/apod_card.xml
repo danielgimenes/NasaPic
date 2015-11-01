@@ -28,31 +28,35 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/apod_preview_image"
             android:layout_marginTop="-48dp"
-            android:paddingLeft="16dp"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
             android:background="#88000000"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
             android:textColor="#FFF"
-            android:textSize="24dp"/>
+            android:textSize="24dp" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:paddingRight="8dp"
             android:textColor="#FFF"
-            android:textSize="20dp"/>
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/explanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/apod_preview_image"
-            android:textColor="#888"
             android:padding="8dp"
-            android:textSize="16dp"/>
+            android:textColor="#888"
+            android:textSize="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"/>
 
     </RelativeLayout>
 

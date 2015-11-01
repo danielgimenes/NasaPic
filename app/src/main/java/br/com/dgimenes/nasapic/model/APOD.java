@@ -2,11 +2,22 @@ package br.com.dgimenes.nasapic.model;
 
 import java.util.Date;
 
+import br.com.dgimenes.nasapic.model.api.ApodDTO;
+
 public class APOD {
     private String url;
     private String explanation;
     private String title;
     private Date date;
+
+    public APOD(ApodDTO apodDTO, Date date) {
+        this.url = apodDTO.getUrl();
+        this.explanation = apodDTO.getExplanation();
+        this.title = apodDTO.getTitle();
+        this.date = date;
+    }
+
+    public APOD() {}
 
     public String getUrl() {
         return url;

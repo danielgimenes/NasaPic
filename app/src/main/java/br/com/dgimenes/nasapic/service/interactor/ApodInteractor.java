@@ -23,6 +23,7 @@ import java.util.Date;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.exception.APODIsNotAPictureException;
+import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.model.api.ApodDTO;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.service.WallpaperChangeNotification;
@@ -46,8 +47,8 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
         this.nasaWebservice = getRestAdapter().create(NasaWebservice.class);
     }
 
-    public void getNasaApodPictureURI(Date date,
-                                      final OnFinishListener<String> onFinishListener) {
+    public void getNasaApod(final Date date,
+                            final OnFinishListener<APOD> onFinishListener) {
         String formattedDate = new SimpleDateFormat(NASA_API_DATE_FORMAT).format(date);
         nasaWebservice.getAPOD(NASA_API_KEY, false, formattedDate, new Callback<ApodDTO>() {
 
@@ -64,7 +65,7 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                     onFinishListener.onError(new APODIsNotAPictureException());
                     return;
                 }
-                onFinishListener.onSuccess(apodDTO.getUrl());
+                onFinishListener.onSuccess(new APOD(apodDTO, date));
             }
 
             @Override
@@ -108,10 +109,10 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
 
     public void setTodaysApodAsWallpaper(final OnFinishListener<Void> onFinishListener) {
         Date today = Calendar.getInstance().getTime();
-        getNasaApodPictureURI(today, new OnFinishListener<String>() {
+        getNasaApod(today, new OnFinishListener<APOD>() {
             @Override
-            public void onSuccess(String pictureUrl) {
-                setWallpaper(pictureUrl, new OnFinishListener<Void>() {
+            public void onSuccess(APOD apod) {
+                setWallpaper(apod.getUrl(), new OnFinishListener<Void>() {
                     @Override
                     public void onSuccess(Void result) {
                         onFinishListener.onSuccess(null);
