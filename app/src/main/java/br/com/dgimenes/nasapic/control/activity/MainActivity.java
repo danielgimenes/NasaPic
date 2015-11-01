@@ -1,16 +1,14 @@
 package br.com.dgimenes.nasapic.control.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.Toolbar;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
@@ -71,21 +69,8 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_about) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            String labelText = getResources().getString(R.string.about_message);
-            //Spannable spannable = URLSpanNoUnderline.removeUrlUnderline(Html.fromHtml(labelText));
-            //titleTextView.setMovementMethod(LinkMovementMethod.getInstance());
-            builder.setMessage(labelText)
-                    .setTitle(R.string.action_about);
-            builder.setNeutralButton(getResources().getString(R.string.about_close_button),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            Intent aboutIntent = new Intent(this, AboutActivity.class);
+            startActivity(aboutIntent);
             return true;
         }
         if (id == R.id.action_settings) {

@@ -19,16 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_alignParentTop="true"
-            android:scaleType="centerCrop"
             android:background="@color/image_view_default_bg"
-            android:src="@drawable/demo_image" />
+            android:scaleType="centerCrop" />
 
         <ProgressBar
             android:id="@+id/loading_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignTop="@id/apod_preview_image"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="90dp"
             android:indeterminate="true" />
 
@@ -62,11 +61,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/apod_preview_image"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:padding="8dp"
             android:textColor="#888"
-            android:textSize="16dp"
-            android:ellipsize="end"
-            android:maxLines="3"/>
+            android:textSize="16dp" />
 
     </RelativeLayout>
 
