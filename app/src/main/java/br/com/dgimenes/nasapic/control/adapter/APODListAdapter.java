@@ -12,12 +12,13 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
+import br.com.dgimenes.nasapic.util.DateUtils;
+import br.com.dgimenes.nasapic.util.StringUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -27,8 +28,6 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
     private List<APOD> dataset;
     private WeakReference<Context> contextWeak;
 
-    private static final String APOD_DATE_FORMAT = "dd/MMM/yyyy";
-    private static SimpleDateFormat dateFormatter = new SimpleDateFormat(APOD_DATE_FORMAT);
     private APODListAdapter.ErrorListener errorListener;
     private int listWidth;
 
@@ -76,22 +75,13 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         APOD apod = dataset.get(position);
-        viewHolder.dateTextView.setText(dateFormatter.format(apod.getDate()));
-        viewHolder.titleTextView.setText(limitString(apod.getTitle(), 28));
-        viewHolder.explanationTextView.setText(addQuotes(limitString(apod.getExplanation(), 160)));
+        viewHolder.dateTextView.setText(
+                DateUtils.friendlyDateString(contextWeak.get(), apod.getDate()));
+        viewHolder.titleTextView.setText(
+                StringUtils.limitString(apod.getTitle(), 28));
+        viewHolder.explanationTextView.setText(
+                StringUtils.addQuotes(StringUtils.limitString(apod.getExplanation(), 120)));
         viewHolder.apodPreviewImageView.setTag(apod.getUrl());
-    }
-
-    private String limitString(String text, int maxCharacters) {
-        if (maxCharacters < text.length()) {
-            return text.substring(0, maxCharacters - 3) + "...";
-        } else {
-            return text;
-        }
-    }
-
-    private String addQuotes(String text) {
-        return "\"" + text + "\"";
     }
 
     @Override

@@ -26,4 +26,6 @@
     <string name="undo_change_button_title">Desfazer</string>
     <string name="undo_error_message">Último papel de parede não está disponível :(</string>
     <string name="periodic_change_preference_group_title">Troca Automática</string>
+    <string name="today">Hoje</string>
+    <string name="yesterday">Ontem</string>
 </resources>
