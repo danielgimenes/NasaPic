@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:layout_alignParentTop="true"
-            android:scaleType="center"
+            android:scaleType="centerCrop"
+            android:background="@color/image_view_default_bg"
             android:src="@drawable/demo_image" />
 
         <TextView

@@ -10,8 +10,8 @@ import br.com.dgimenes.nasapic.R;
 
 public class DateUtils {
     private static final String OLDER_THAN_ONE_WEEK_FORMAT = "MMM, dd";
-    private static final String WEEK_DAY_FORMAT = "ddd";
-    private static final int ONE_DAY_IN_MILI = 1000 * 60 * 60 * 24 * 7;
+    private static final String WEEK_DAY_FORMAT = "EEEE";
+    private static final int ONE_DAY_IN_MILI = 1000 * 60 * 60 * 24;
     private static SimpleDateFormat olderThanOneWeekDateFormatter =
             new SimpleDateFormat(OLDER_THAN_ONE_WEEK_FORMAT);
     private static SimpleDateFormat weekDayDateFormatter =
@@ -28,9 +28,11 @@ public class DateUtils {
         } else if (differenceInMili < ONE_DAY_IN_MILI * 2) {
             return context.getResources().getString(R.string.yesterday);
         } else if (differenceInMili < ONE_DAY_IN_MILI * 7) {
-            return weekDayDateFormatter.format(date);
+            String weekDay = weekDayDateFormatter.format(date);
+            return StringUtils.capitalizeFirstLetter(weekDay);
         } else {
-            return olderThanOneWeekDateFormatter.format(date);
+            String dateStr = olderThanOneWeekDateFormatter.format(date);
+            return StringUtils.capitalizeFirstLetter(dateStr);
         }
     }
 }

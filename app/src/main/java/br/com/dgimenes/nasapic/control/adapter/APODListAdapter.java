@@ -77,18 +77,16 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
         APOD apod = dataset.get(position);
         viewHolder.dateTextView.setText(
                 DateUtils.friendlyDateString(contextWeak.get(), apod.getDate()));
-        viewHolder.titleTextView.setText(
-                StringUtils.limitString(apod.getTitle(), 28));
+        viewHolder.titleTextView.setText(apod.getTitle());
         viewHolder.explanationTextView.setText(
-                StringUtils.addQuotes(StringUtils.limitString(apod.getExplanation(), 120)));
+                StringUtils.addQuotes(apod.getExplanation()));
         viewHolder.apodPreviewImageView.setTag(apod.getUrl());
     }
 
     @Override
     public void onViewAttachedToWindow(ViewHolder viewHolder) {
         String src = (String) viewHolder.apodPreviewImageView.getTag();
-        picasso.load(src).placeholder(R.drawable.loading).resize(listWidth, 0)
-                .into(viewHolder.apodPreviewImageView);
+        picasso.load(src).resize(listWidth, 0).into(viewHolder.apodPreviewImageView);
     }
 
     private void displayErrorMessage(int errorMessageResource) {

@@ -6,4 +6,5 @@
     <color name="colorAccent">#0091ea</color>
     <color name="palette_darkest">#071013</color>
     <color name="palette_brightest">#FFF</color>
+    <color name="image_view_default_bg">#000</color>
 </resources>
