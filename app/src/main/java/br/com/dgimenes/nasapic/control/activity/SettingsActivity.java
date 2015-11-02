@@ -46,21 +46,25 @@ public class SettingsActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.settings);
             String preferenceKey = getActivity().getResources()
                     .getString(R.string.periodic_change_preference);
-            findPreference(preferenceKey)
-                    .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                        @Override
-                        public boolean onPreferenceChange(Preference preference, Object newValue) {
-                            boolean periodicChange = (Boolean) newValue;
-                            if (periodicChange) {
-                                PeriodicWallpaperChangeService
-                                        .setupIfNeededPeriodicWallpaperChange(getActivity());
-                            } else {
-                                PeriodicWallpaperChangeService
-                                        .unschedulePeriodicWallpaperChange(getActivity());
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+                findPreference(preferenceKey).setEnabled(false);
+            } else {
+                findPreference(preferenceKey)
+                        .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                            @Override
+                            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                                boolean periodicChange = (Boolean) newValue;
+                                if (periodicChange) {
+                                    PeriodicWallpaperChangeService
+                                            .setupIfNeededPeriodicWallpaperChange(getActivity());
+                                } else {
+                                    PeriodicWallpaperChangeService
+                                            .unschedulePeriodicWallpaperChange(getActivity());
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    });
+                        });
+            }
         }
     }
 }

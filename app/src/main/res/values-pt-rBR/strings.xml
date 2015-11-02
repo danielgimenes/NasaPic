@@ -24,7 +24,7 @@
     <string name="notification_preference_title">Notificação</string>
     <string name="undo_change_button_title">Desfazer</string>
     <string name="undo_error_message">Último papel de parede não está disponível :(</string>
-    <string name="periodic_change_preference_group_title">Troca Automática</string>
+    <string name="periodic_change_preference_group_title">Troca Automática (Lollipop ou superior)</string>
     <string name="today">Hoje</string>
     <string name="yesterday">Ontem</string>
     <string name="loading_more_apods">Carregando mais fotos…</string>
