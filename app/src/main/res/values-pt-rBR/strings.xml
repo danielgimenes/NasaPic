@@ -2,7 +2,7 @@
     <string name="app_name">NasaPic</string>
     <string name="action_about">Sobre</string>
     <string name="error_loading_apod">Erro ao acessar servidores da NASA</string>
-    <string name="set_wallpaper_button_text">Trocar Papel de Parede</string>
+    <string name="set_wallpaper_button_text">Usar como Papel de Parede</string>
     <string name="error_downloading_apod">Erro ao baixar imagem</string>
     <string name="error_setting_wallpaper">Erro durante troca de papel de parede</string>
     <string name="wallpaper_set">Papel de Parede alterado!</string>
@@ -30,4 +30,7 @@
     <string name="yesterday">Ontem</string>
     <string name="loading_more_apods">Carregando mais fotos...</string>
     <string name="end_of_list">Fim da lista</string>
+    <string name="open_description_button">Descrição</string>
+    <string name="close_description_button">Fechar</string>
+    <string name="text_origin">(origem: website APOD da NASA)</string>
 </resources>

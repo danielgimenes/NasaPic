@@ -12,7 +12,6 @@
     <style name="ImageZoomTheme" parent="AppTheme">
         <item name="actionBarStyle">@style/AppTheme.ActionBar.Transparent</item>
         <item name="android:windowBackground">@color/palette_darkest</item>
-        <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimaryDark">@color/palette_darkest</item>
     </style>
 
@@ -59,5 +58,10 @@
         <!-- toolbar's background color, but setting this also changes the popup menu's background,
         even if we define popupTheme for our <Toolbar> -->
         <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.Toolbar.Transparent" parent="AppTheme.Toolbar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="colorControlNormal">@color/abc_primary_text_material_dark</item>
     </style>
 </resources>

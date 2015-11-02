@@ -4,13 +4,21 @@
     android:layout_height="match_parent"
     tools:context="br.com.dgimenes.nasapic.activity.ImageZoomActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.Toolbar.Transparent"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="10dp" />
+
     <ProgressBar
         android:id="@+id/progress_bar"
         style="@android:style/Widget.ProgressBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
 
     <com.ortiz.touch.TouchImageView
         android:id="@+id/image_view"
@@ -18,5 +26,38 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/open_explanation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_above="@+id/explanation"
+        android:background="#88000000"
+        android:textColor="#FFF"
+        android:text="@string/open_description_button" />
+
+    <TextView
+        android:id="@id/explanation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#88000000"
+        android:layout_above="@+id/set_wallpaper_button"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:textColor="#FFF"
+        android:textSize="16dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@id/set_wallpaper_button"
+        style="@style/AppTheme.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/set_wallpaper_button_text" />
 
 </RelativeLayout>

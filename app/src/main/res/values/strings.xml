@@ -32,4 +32,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="loading_more_apods">Loading more pictures...</string>
     <string name="end_of_list">End of list</string>
+    <string name="open_description_button">Description</string>
+    <string name="close_description_button">Close</string>
+    <string name="text_origin">(origin: NASA\'s APOD website)</string>
 </resources>
