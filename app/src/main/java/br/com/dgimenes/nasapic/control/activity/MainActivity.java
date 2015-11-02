@@ -10,11 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.crashlytics.android.Crashlytics;
+
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
 import br.com.dgimenes.nasapic.service.PeriodicWallpaperChangeService;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -33,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();

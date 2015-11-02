@@ -51,6 +51,14 @@
         <service
             android:name=".service.UndoWallpaperChangeService"
             android:exported="true"/>
+
+       <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="79d97d9ed31d18926f23ca8418da12b28f96718e" />
+         <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="79d97d9ed31d18926f23ca8418da12b28f96718e" />
+
     </application>
 
 </manifest>
