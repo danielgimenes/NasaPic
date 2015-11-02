@@ -18,7 +18,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.control.activity.ImageZoomActivity;
+import br.com.dgimenes.nasapic.control.activity.DetailActivity;
 import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.util.DateUtils;
@@ -143,8 +143,8 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(contextWeak.get(), ImageZoomActivity.class);
-            intent.putExtra(ImageZoomActivity.APOD_OBJECT_PARAM, apod);
+            Intent intent = new Intent(contextWeak.get(), DetailActivity.class);
+            intent.putExtra(DetailActivity.APOD_OBJECT_PARAM, apod);
             contextWeak.get().startActivity(intent);
         }
     }

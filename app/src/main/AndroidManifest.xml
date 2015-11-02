@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".control.activity.ImageZoomActivity"
+            android:name=".control.activity.DetailActivity"
             android:parentActivityName=".control.activity.MainActivity"
             android:theme="@style/ImageZoomTheme" />
 

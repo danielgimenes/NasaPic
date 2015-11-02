@@ -5,7 +5,7 @@
     <string name="set_wallpaper_button_text">Set as Wallpaper</string>
     <string name="error_downloading_apod">Error downloading picture</string>
     <string name="error_setting_wallpaper">Error while trying to set wallpaper</string>
-    <string name="wallpaper_set">Wallpaper changed!</string>
+    <string name="success_setting_wallpaper">Wallpaper changed!</string>
     <string name="about_message">NasaPic by Daniel Gimenes\n\n- Uses NASA\'s API available at http://api.nasa.gov/.\n\n - Open Source and free; Code available at github.com/danielgimenes/nasapic/\n</string>
     <string name="about_close_button">Close</string>
     <string name="apod_is_not_a_picture">Today\'s APOD is not an image :(</string>

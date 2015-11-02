@@ -17,11 +17,14 @@ import com.squareup.picasso.Picasso;
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
+import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
+import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.util.DateUtils;
+import br.com.dgimenes.nasapic.view.LoadingDialog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ImageZoomActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     public static final String APOD_OBJECT_PARAM = "APOD_OBJECT_PARAM";
 
@@ -40,17 +43,22 @@ public class ImageZoomActivity extends AppCompatActivity {
     @Bind(R.id.main_toolbar)
     Toolbar mainToolbar;
 
+    @Bind(R.id.set_wallpaper_button)
+    Button setWallpaperButton;
+
     private APOD apod;
+
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_zoom);
+        setContentView(R.layout.activity_detail);
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         ButterKnife.bind(this);
-        apod = getIntent().getExtras().getParcelable(ImageZoomActivity.APOD_OBJECT_PARAM);
+        apod = getIntent().getExtras().getParcelable(DetailActivity.APOD_OBJECT_PARAM);
         setupUI();
         loadImageAsync();
     }
@@ -59,8 +67,10 @@ public class ImageZoomActivity extends AppCompatActivity {
         this.setTitle(apod.getTitle());
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        loadingDialog = new LoadingDialog(this);
         explanationTextView.setText(DateUtils.friendlyDateString(this, apod.getDate()) + " - \"" +
                 apod.getExplanation() + "\" " + getResources().getString(R.string.text_origin));
+
         openExplanationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +83,28 @@ public class ImageZoomActivity extends AppCompatActivity {
                     openExplanationButton.setText(
                             getResources().getString(R.string.open_description_button));
                 }
+            }
+        });
+
+        setWallpaperButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadingDialog.show();
+                new ApodInteractor(DetailActivity.this).setWallpaper(apod.getUrl(), new OnFinishListener<Void>() {
+                    @Override
+                    public void onSuccess(Void result) {
+                        loadingDialog.dismiss();
+                        String errorMessage = getResources().getString(R.string.success_setting_wallpaper);
+                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        loadingDialog.dismiss();
+                        String errorMessage = getResources().getString(R.string.error_setting_wallpaper);
+                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -89,7 +121,7 @@ public class ImageZoomActivity extends AppCompatActivity {
             @Override
             public void onError() {
                 String errorMessage = getResources().getString(R.string.error_downloading_apod);
-                Toast.makeText(ImageZoomActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

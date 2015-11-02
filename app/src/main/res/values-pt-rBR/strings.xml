@@ -5,7 +5,7 @@
     <string name="set_wallpaper_button_text">Usar como Papel de Parede</string>
     <string name="error_downloading_apod">Erro ao baixar imagem</string>
     <string name="error_setting_wallpaper">Erro durante troca de papel de parede</string>
-    <string name="wallpaper_set">Papel de Parede alterado!</string>
+    <string name="success_setting_wallpaper">Papel de Parede alterado!</string>
     <string name="about_message">NasaPic - desenvolvido por Daniel Gimenes\n\n- Utiliza API da NASA disponível em http://api.nasa.gov/.\n\n - Open Source e gratuito; Código-fonte disponível em github.com/danielgimenes/nasapic/\n</string>
     <string name="about_close_button">Fechar</string>
     <string name="apod_is_not_a_picture">O site da NASA não forneceu uma figura hoje :(</string>
