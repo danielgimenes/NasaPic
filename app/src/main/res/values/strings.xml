@@ -35,6 +35,6 @@
     <string name="close_description_button">Close</string>
     <string name="text_origin">(origin: NASA\'s APOD website)</string>
     <string name="setting_wallpaper">Setting wallpaper…</string>
-    <string name="about_text">- Developed by Daniel Gimenes\n\n- Uses NASA\'s API (http://api.nasa.gov/) to get Astronomy Picture of The Day (APOD)\n\n- Open source (github.com/danielgimenes/nasapic/)</string>
+    <string name="about_text">- Developed by Daniel Gimenes\n\n- Uses NASA\'s API (http://api.nasa.gov/) to get Astronomy Picture of The Day (APOD)\n\n- Open source (github.com/danielgimenes/nasapic)</string>
     <string name="version">Version</string>
 </resources>

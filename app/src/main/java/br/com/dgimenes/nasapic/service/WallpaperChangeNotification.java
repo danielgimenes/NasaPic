@@ -37,8 +37,8 @@ public class WallpaperChangeNotification {
                     new Intent[]{new Intent(context, MainActivity.class)},
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
-            Intent undoChangeIntent = new Intent(context, PeriodicWallpaperChangeService.class);
-            undoChangeIntent.putExtra(PeriodicWallpaperChangeService.UNDO_OPERATION_EXTRA, true);
+            Intent undoChangeIntent = new Intent(context, UndoWallpaperChangeService.class);
+            undoChangeIntent.putExtra(UndoWallpaperChangeService.UNDO_OPERATION_EXTRA, true);
             PendingIntent undoChangePendingIntent = PendingIntent.getService(context,
                     UNDO_REQUEST_CODE, undoChangeIntent, PendingIntent.FLAG_ONE_SHOT);
             String undoChangeButtonTitle = context.getResources()

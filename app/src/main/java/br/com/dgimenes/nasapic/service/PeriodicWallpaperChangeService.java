@@ -15,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import br.com.dgimenes.nasapic.R;
@@ -26,31 +25,12 @@ import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 public class PeriodicWallpaperChangeService extends JobService {
     public static final int JOB_ID = 666;
     private static final String LAST_APOD_CHECK_DAY = "LAST_APOD_CHECK_DAY";
-    private static final String LOG_TAG = PeriodicWallpaperChangeService.class.getSimpleName();
+    private static final String LOG_TAG = PeriodicWallpaperChangeService.class.getName();
     private static final int PERIOD_IN_HOURS = 6;
-    public static final String UNDO_OPERATION_EXTRA = "UNDO_OPERATION_EXTRA";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean undoOperation = intent.getExtras().getBoolean(UNDO_OPERATION_EXTRA, false);
-        if (undoOperation) {
-            undoLastWallpaperChange();
-        }
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void undoLastWallpaperChange() {
-        try {
-            WallpaperChangeNotification.dismissChangedNotification(this);
-            WallpaperChangeNotification.createChangingNotification(this);
-            new ApodInteractor(this).undoLastWallpaperChangeSync();
-            WallpaperChangeNotification.dismissChangingNotification(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-            String undoErrorMessage = getResources().getString(R.string.undo_error_message);
-            Log.e(LOG_TAG, undoErrorMessage);
-            Toast.makeText(this, undoErrorMessage, Toast.LENGTH_SHORT).show();
-        }
     }
 
     public static void updatePeriodicWallpaperChangeSetup(Context context) {
