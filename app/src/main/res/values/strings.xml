@@ -31,4 +31,5 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="loading_more_apods">Loading more pictures...</string>
+    <string name="end_of_list">End of list</string>
 </resources>

@@ -29,4 +29,5 @@
     <string name="today">Hoje</string>
     <string name="yesterday">Ontem</string>
     <string name="loading_more_apods">Carregando mais fotos...</string>
+    <string name="end_of_list">Fim da lista</string>
 </resources>

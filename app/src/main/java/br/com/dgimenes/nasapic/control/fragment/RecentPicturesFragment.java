@@ -116,6 +116,8 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
                     advanceNextDateToLoad();
                     loadAPOD(daysToLoad - 1);
                 } catch (NoMoreAPODsToLoadException e) {
+                    String endOfListMessage = getResources().getString(R.string.end_of_list);
+                    Snackbar.make(recyclerView, endOfListMessage, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
