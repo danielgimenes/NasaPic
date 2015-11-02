@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.control.fragment.BestPicturesTabFragment;
+import br.com.dgimenes.nasapic.control.fragment.BestPicturesFragment;
 import br.com.dgimenes.nasapic.control.fragment.RecentPicturesFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
@@ -27,7 +27,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
                 fragment = new RecentPicturesFragment();
                 break;
             case 1:
-                fragment = new BestPicturesTabFragment();
+                fragment = new BestPicturesFragment();
                 break;
         }
         return fragment;

@@ -24,6 +24,7 @@ import java.util.List;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.APODListAdapter;
+import br.com.dgimenes.nasapic.exception.NoMoreAPODsToLoadException;
 import br.com.dgimenes.nasapic.model.APOD;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
 
 public class RecentPicturesFragment extends Fragment implements APODListAdapter.ErrorListener {
 
-    private static final int LIST_PAGE_SIZE = 10;
+    private static final int LIST_PAGE_SIZE = 5;
     private static final String LOG_TAG = RecentPicturesFragment.class.getName();
 
     @Bind(R.id.recent_pics_recycler_view)
@@ -46,7 +47,7 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
     private List<APOD> apods;
-    private Date nextDateToLoad;
+    protected Date nextDateToLoad;
     private boolean loadingAPODs = false;
 
     @Nullable
@@ -69,8 +70,12 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
         recyclerViewAdapter = new APODListAdapter(getActivity(), apods, this, getDisplayWidth());
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        nextDateToLoad = Calendar.getInstance().getTime();
-        loadAPOD(LIST_PAGE_SIZE);
+        try {
+            advanceNextDateToLoad();
+            loadAPOD(LIST_PAGE_SIZE);
+        } catch (NoMoreAPODsToLoadException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadAPOD(final int daysToLoad) {
@@ -107,17 +112,24 @@ public class RecentPicturesFragment extends Fragment implements APODListAdapter.
                     listLoadingIndicator.setVisibility(View.GONE);
 
                 }
-                advanceNextDateToLoad();
-                loadAPOD(daysToLoad - 1);
+                try {
+                    advanceNextDateToLoad();
+                    loadAPOD(daysToLoad - 1);
+                } catch (NoMoreAPODsToLoadException e) {
+                }
             }
         });
     }
 
-    private void advanceNextDateToLoad() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(nextDateToLoad);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        nextDateToLoad = cal.getTime();
+    protected void advanceNextDateToLoad() throws NoMoreAPODsToLoadException {
+        if (nextDateToLoad == null) {
+            nextDateToLoad = Calendar.getInstance().getTime();
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(nextDateToLoad);
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            nextDateToLoad = cal.getTime();
+        }
     }
 
     private void setupInfiniteScroll() {
