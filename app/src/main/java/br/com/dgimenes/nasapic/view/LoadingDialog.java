@@ -26,6 +26,7 @@ public class LoadingDialog {
             loadingDialog.setIndeterminate(false);
             loadingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             loadingDialog.setMessage(context.getResources().getString(R.string.wait));
+            loadingDialog.setCancelable(false);
         }
         loadingDialog.show();
     }

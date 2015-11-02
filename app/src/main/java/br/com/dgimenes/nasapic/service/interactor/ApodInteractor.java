@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,7 +57,7 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                     String errorMessage = "Invalid response media type. Response: " +
                             response.getStatus() + " " + response.getReason();
                     Log.e(ApodInteractor.class.getSimpleName(), errorMessage);
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                    onFinishListener.onError(new APODIsNotAPictureException());
                     return;
                 }
                 if (!apodDTO.getMediaType().equals("image")) {

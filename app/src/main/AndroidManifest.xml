@@ -27,6 +27,7 @@
         <activity
             android:name=".control.activity.DetailActivity"
             android:parentActivityName=".control.activity.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageZoomTheme" />
 
         <activity
