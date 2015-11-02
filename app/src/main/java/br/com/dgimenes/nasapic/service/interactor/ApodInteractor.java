@@ -157,8 +157,8 @@ public class ApodInteractor extends RetrofitWithCacheInteractor {
                         if (success) {
                             Resources res = ApodInteractor.this.context.getResources();
                             String successMessage = res.getString(R.string.periodic_change_sucess);
-                            WallpaperChangeNotification.createNotification(
-                                        ApodInteractor.this.context, successMessage);
+                            WallpaperChangeNotification.createChangedNotification(
+                                    ApodInteractor.this.context, successMessage);
                             onFinishListener.onSuccess(null);
                         } else {
                             onFinishListener.onError(null);

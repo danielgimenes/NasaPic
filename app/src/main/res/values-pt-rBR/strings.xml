@@ -9,7 +9,7 @@
     <string name="about_message">NasaPic - desenvolvido por Daniel Gimenes\n\n- Utiliza API da NASA disponível em http://api.nasa.gov/.\n\n - Open Source e gratuito; Código-fonte disponível em github.com/danielgimenes/nasapic/\n</string>
     <string name="about_close_button">Fechar</string>
     <string name="apod_is_not_a_picture">O site da NASA não forneceu uma figura hoje :(</string>
-    <string name="wait">Aguarde...</string>
+    <string name="wait">Aguarde…</string>
     <string name="recent_tab_title">Novas</string>
     <string name="best_pics_tab_title">Melhores</string>
     <string name="periodic_change_sucess">Papel de parede alterado</string>
@@ -28,9 +28,10 @@
     <string name="periodic_change_preference_group_title">Troca Automática</string>
     <string name="today">Hoje</string>
     <string name="yesterday">Ontem</string>
-    <string name="loading_more_apods">Carregando mais fotos...</string>
+    <string name="loading_more_apods">Carregando mais fotos…</string>
     <string name="end_of_list">Fim da lista</string>
     <string name="open_description_button">Descrição</string>
     <string name="close_description_button">Fechar</string>
     <string name="text_origin">(origem: website APOD da NASA)</string>
+    <string name="setting_wallpaper">Trocando papel de parede…</string>
 </resources>

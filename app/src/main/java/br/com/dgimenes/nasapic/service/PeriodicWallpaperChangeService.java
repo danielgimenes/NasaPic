@@ -1,7 +1,6 @@
 package br.com.dgimenes.nasapic.service;
 
 import android.annotation.TargetApi;
-import android.app.NotificationManager;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
@@ -36,16 +35,16 @@ public class PeriodicWallpaperChangeService extends JobService {
         boolean undoOperation = intent.getExtras().getBoolean(UNDO_OPERATION_EXTRA, false);
         if (undoOperation) {
             undoLastWallpaperChange();
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(WallpaperChangeNotification.NOTIFICATION_ID);
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
     private void undoLastWallpaperChange() {
         try {
+            WallpaperChangeNotification.dismissChangedNotification(this);
+            WallpaperChangeNotification.createChangingNotification(this);
             new ApodInteractor(this).undoLastWallpaperChangeSync();
+            WallpaperChangeNotification.dismissChangingNotification(this);
         } catch (IOException e) {
             e.printStackTrace();
             String undoErrorMessage = getResources().getString(R.string.undo_error_message);
@@ -126,7 +125,7 @@ public class PeriodicWallpaperChangeService extends JobService {
                 public void onError(Throwable throwable) {
                     String errorMessage = PeriodicWallpaperChangeService.this.getResources()
                             .getString(R.string.periodic_change_error);
-                    WallpaperChangeNotification.createNotification(
+                    WallpaperChangeNotification.createChangedNotification(
                             PeriodicWallpaperChangeService.this, errorMessage);
                 }
             });
@@ -147,7 +146,7 @@ public class PeriodicWallpaperChangeService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        WallpaperChangeNotification.createNotification(this,
+        WallpaperChangeNotification.createChangedNotification(this,
                 "NasaPic PeriodicWallpaperChangeService stopping...");
         return false; // means everything is done
     }

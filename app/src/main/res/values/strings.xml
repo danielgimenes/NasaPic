@@ -9,7 +9,7 @@
     <string name="about_message">NasaPic by Daniel Gimenes\n\n- Uses NASA\'s API available at http://api.nasa.gov/.\n\n - Open Source and free; Code available at github.com/danielgimenes/nasapic/\n</string>
     <string name="about_close_button">Close</string>
     <string name="apod_is_not_a_picture">Today\'s APOD is not an image :(</string>
-    <string name="wait">Please wait...</string>
+    <string name="wait">Please wait…</string>
     <string name="recent_tab_title">Recent</string>
     <string name="best_pics_tab_title">Best</string>
     <string name="periodic_change_sucess">Wallpaper changed</string>
@@ -30,9 +30,10 @@
     <string name="periodic_change_preference_group_title">Automatic Wallpaper Change</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
-    <string name="loading_more_apods">Loading more pictures...</string>
+    <string name="loading_more_apods">Loading more pictures…</string>
     <string name="end_of_list">End of list</string>
     <string name="open_description_button">Description</string>
     <string name="close_description_button">Close</string>
     <string name="text_origin">(origin: NASA\'s APOD website)</string>
+    <string name="setting_wallpaper">Setting wallpaper…</string>
 </resources>
