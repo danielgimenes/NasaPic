@@ -37,4 +37,5 @@
     <string name="setting_wallpaper">Setting wallpaper…</string>
     <string name="about_text">- Developed by Daniel Gimenes\n\n- Uses NASA\'s API (http://api.nasa.gov/) to get Astronomy Picture of The Day (APOD)\n\n- Open source (github.com/danielgimenes/nasapic)</string>
     <string name="version">Version</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 </resources>
