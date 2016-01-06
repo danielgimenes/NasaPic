@@ -3,7 +3,7 @@ package br.com.dgimenes.nasapic.control.fragment;
 import br.com.dgimenes.nasapic.exception.NoMoreAPODsToLoadException;
 import br.com.dgimenes.nasapic.service.BestPicturesConfig;
 
-public class BestPicturesFragment extends RecentPicturesFragment {
+public class BestPicturesFragment extends RecentPicturesFragmentOLD {
 
     private int dateIndexToLoad = 0;
 

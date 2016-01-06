@@ -15,23 +15,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.control.adapter.SpacePicListAdapter;
-import br.com.dgimenes.nasapic.model.SpacePic;
+import br.com.dgimenes.nasapic.control.adapter.APODListAdapter;
+import br.com.dgimenes.nasapic.exception.NoMoreAPODsToLoadException;
+import br.com.dgimenes.nasapic.model.APOD;
+import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
-import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RecentPicturesFragment extends Fragment implements SpacePicListAdapter.ErrorListener {
+public class RecentPicturesFragmentOLD extends Fragment implements APODListAdapter.ErrorListener {
 
     private static final int LIST_PAGE_SIZE = 5;
-    private static final String LOG_TAG = RecentPicturesFragment.class.getName();
+    private static final String LOG_TAG = RecentPicturesFragmentOLD.class.getName();
 
     @Bind(R.id.recent_pics_recycler_view)
     RecyclerView recyclerView;
@@ -43,9 +46,9 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
 
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
-    private List<SpacePic> spacePics;
-    protected int nextPageToLoad;
-    private Boolean loadingFeed = false;
+    private List<APOD> apods;
+    protected Date nextDateToLoad;
+    private boolean loadingAPODs = false;
 
     @Nullable
     @Override
@@ -63,47 +66,72 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         recyclerViewLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
-        spacePics = new ArrayList<>();
-        recyclerViewAdapter = new SpacePicListAdapter(getActivity(),
-                spacePics, this, getDisplayWidth());
+        apods = new ArrayList<>();
+        recyclerViewAdapter = new APODListAdapter(getActivity(), apods, this, getDisplayWidth());
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        nextPageToLoad = 1;
-        loadFeed();
+        try {
+            advanceNextDateToLoad();
+            loadAPOD(LIST_PAGE_SIZE);
+        } catch (NoMoreAPODsToLoadException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void loadFeed() {
-        synchronized (loadingFeed) {
-            if (!loadingFeed) {
-                loadingFeed = true;
-            }
+    private void loadAPOD(final int daysToLoad) {
+        if (!loadingAPODs) {
+            loadingAPODs = true;
         }
-        SpacePicInteractor spacePicInteractor = new SpacePicInteractor(getActivity());
-        spacePicInteractor.getFeed(nextPageToLoad, new OnFinishListener<List<SpacePic>>() {
+        if (nextDateToLoad == null) {
+            return;
+        }
+        if (daysToLoad == 0) {
+            loadingAPODs = false;
+            setupInfiniteScroll();
+            return;
+        }
+        ApodInteractor apodInteractor = new ApodInteractor(getActivity());
+        apodInteractor.getNasaApod(nextDateToLoad, new OnFinishListener<APOD>() {
             @Override
-            public void onSuccess(List<SpacePic> loadedPics) {
-                spacePics.addAll(loadedPics);
+            public void onSuccess(APOD apod) {
+                apods.add(apod);
                 recyclerViewAdapter.notifyDataSetChanged();
-                if (recyclerView.getVisibility() == View.GONE) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    listLoadingIndicator.setVisibility(View.GONE);
-                }
-                releaseLoadingFeed();
+                loadNextAPOD();
             }
 
             @Override
             public void onError(Throwable throwable) {
-                error("Error loading feed (page " + nextPageToLoad + ")");
-                releaseLoadingFeed();
+                error("Error loading APOD of day " +
+                        new SimpleDateFormat("yyyy-MM-dd").format(nextDateToLoad));
+                loadNextAPOD();
             }
 
-            private void releaseLoadingFeed() {
-                synchronized (loadingFeed) {
-                    loadingFeed = false;
-                    setupInfiniteScroll();
+            private void loadNextAPOD() {
+                if (recyclerView.getVisibility() == View.GONE) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    listLoadingIndicator.setVisibility(View.GONE);
+
+                }
+                try {
+                    advanceNextDateToLoad();
+                    loadAPOD(daysToLoad - 1);
+                } catch (NoMoreAPODsToLoadException e) {
+                    String endOfListMessage = getResources().getString(R.string.end_of_list);
+                    Snackbar.make(recyclerView, endOfListMessage, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    protected void advanceNextDateToLoad() throws NoMoreAPODsToLoadException {
+        if (nextDateToLoad == null) {
+            nextDateToLoad = Calendar.getInstance().getTime();
+        } else {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(nextDateToLoad);
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            nextDateToLoad = cal.getTime();
+        }
     }
 
     private void setupInfiniteScroll() {
@@ -113,11 +141,11 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 boolean canScrollDown = recyclerView.canScrollVertically(1);
                 synchronized (this) {
-                    if (!canScrollDown && !loadingFeed) {
+                    if (!canScrollDown && !loadingAPODs) {
                         String loadingMessage =
                                 getResources().getString(R.string.loading_more_apods);
                         Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_SHORT).show();
-                        loadFeed();
+                        loadAPOD(LIST_PAGE_SIZE);
                     }
                 }
             }
@@ -126,7 +154,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
 
     @Override
     public void error(String errorMessage) {
-        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
         Log.d(LOG_TAG, errorMessage);
     }
 
