@@ -97,14 +97,14 @@ public class DetailActivity extends AppCompatActivity {
                     public void onSuccess(Void result) {
                         loadingDialog.dismiss();
                         String errorMessage = getResources().getString(R.string.success_setting_wallpaper);
-                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         loadingDialog.dismiss();
                         String errorMessage = getResources().getString(R.string.error_setting_wallpaper);
-                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -123,7 +123,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onError() {
                 String errorMessage = getResources().getString(R.string.error_downloading_apod);
-                Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         });
     }

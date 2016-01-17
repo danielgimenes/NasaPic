@@ -85,8 +85,8 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
                 recyclerViewAdapter.notifyDataSetChanged();
                 if (recyclerView.getVisibility() == View.GONE) {
                     recyclerView.setVisibility(View.VISIBLE);
-                    listLoadingIndicator.setVisibility(View.GONE);
                 }
+                listLoadingIndicator.setVisibility(View.GONE);
                 nextPageToLoad++;
                 releaseLoadingFeed();
             }
@@ -117,7 +117,9 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
                     if (!canScrollDown && !loadingFeed) {
                         String loadingMessage =
                                 getResources().getString(R.string.loading_more_apods);
-                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_LONG).show();
+                        listLoadingIndicator.setVisibility(View.VISIBLE);
+                        listLoadingIndicator.bringToFront();
                         loadFeed();
                     }
                 }
@@ -127,7 +129,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
 
     @Override
     public void error(String errorMessage) {
-        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
         Log.d(LOG_TAG, errorMessage);
     }
 

@@ -15,7 +15,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 public abstract class RetrofitWithCacheInteractor {
-    private static final long HTTP_CACHE_SIZE_IN_BYTES = 2048;
+    private static final long HTTP_CACHE_SIZE_IN_BYTES = 1024 * 10;
     private final RestAdapter restAdapter;
 
     public RetrofitWithCacheInteractor(Context context, String apiBaseUrl) {

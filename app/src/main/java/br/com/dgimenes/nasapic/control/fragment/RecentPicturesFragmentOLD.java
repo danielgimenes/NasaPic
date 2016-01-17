@@ -117,7 +117,7 @@ public class RecentPicturesFragmentOLD extends Fragment implements APODListAdapt
                     loadAPOD(daysToLoad - 1);
                 } catch (NoMoreAPODsToLoadException e) {
                     String endOfListMessage = getResources().getString(R.string.end_of_list);
-                    Snackbar.make(recyclerView, endOfListMessage, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(recyclerView, endOfListMessage, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -144,7 +144,7 @@ public class RecentPicturesFragmentOLD extends Fragment implements APODListAdapt
                     if (!canScrollDown && !loadingAPODs) {
                         String loadingMessage =
                                 getResources().getString(R.string.loading_more_apods);
-                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_LONG).show();
                         loadAPOD(LIST_PAGE_SIZE);
                     }
                 }

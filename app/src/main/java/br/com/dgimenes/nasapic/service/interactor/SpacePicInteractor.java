@@ -27,7 +27,7 @@ public class SpacePicInteractor extends RetrofitWithCacheInteractor {
     }
 
     public void getFeed(int page, final OnFinishListener<List<SpacePic>> onFinishListener) {
-        webservice.getFeed(new Callback<FeedDTO>() {
+        webservice.getFeed(page, new Callback<FeedDTO>() {
             @Override
             public void success(FeedDTO feed, Response response) {
                 List<SpacePic> spacePics = new ArrayList<>();
