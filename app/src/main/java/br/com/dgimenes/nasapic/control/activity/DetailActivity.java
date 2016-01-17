@@ -15,7 +15,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.model.APOD;
+import br.com.dgimenes.nasapic.model.SpacePic;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String APOD_OBJECT_PARAM = "APOD_OBJECT_PARAM";
+    public static final String SPACE_PIC_PARAM = "SPACE_PIC_PARAM";
 
     @Bind(R.id.image_view)
     ImageView imageView;
@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
     @Bind(R.id.set_wallpaper_button)
     Button setWallpaperButton;
 
-    private APOD apod;
+    private SpacePic spacePic;
 
     private LoadingDialog loadingDialog;
 
@@ -58,18 +58,19 @@ public class DetailActivity extends AppCompatActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         ButterKnife.bind(this);
-        apod = getIntent().getExtras().getParcelable(DetailActivity.APOD_OBJECT_PARAM);
+        spacePic = getIntent().getExtras().getParcelable(DetailActivity.SPACE_PIC_PARAM);
         setupUI();
         loadImageAsync();
     }
 
     private void setupUI() {
-        this.setTitle(apod.getTitle());
+        this.setTitle(spacePic.getTitle());
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         loadingDialog = new LoadingDialog(this);
-        explanationTextView.setText(DateUtils.friendlyDateString(this, apod.getDate()) + " - \"" +
-                apod.getExplanation() + "\" " + getResources().getString(R.string.text_origin));
+        explanationTextView.setText(
+                DateUtils.friendlyDateString(this, spacePic.getOriginallyPublishedAt()) + " - \"" +
+                    spacePic.getDescription() + "\" " + getResources().getString(R.string.text_origin));
 
         openExplanationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +91,8 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingDialog.show();
-                new ApodInteractor(DetailActivity.this).setWallpaper(apod.getUrl(), new OnFinishListener<Void>() {
+                new ApodInteractor(DetailActivity.this).setWallpaper(
+                        spacePic.getHdImageUrl(), new OnFinishListener<Void>() {
                     @Override
                     public void onSuccess(Void result) {
                         loadingDialog.dismiss();
@@ -111,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void loadImageAsync() {
         Picasso picasso = DefaultPicasso.get(this, null);
-        picasso.load(apod.getUrl()).into(imageView, new Callback() {
+        picasso.load(spacePic.getHdImageUrl()).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
                 progressBar.setVisibility(View.GONE);

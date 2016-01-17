@@ -2,6 +2,7 @@ package br.com.dgimenes.nasapic.service.interactor;
 
 import android.content.Context;
 
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
 import retrofit.client.OkClient;
+import retrofit.converter.GsonConverter;
 
 public abstract class RetrofitWithCacheInteractor {
     private static final long HTTP_CACHE_SIZE_IN_BYTES = 2048;
@@ -20,6 +22,8 @@ public abstract class RetrofitWithCacheInteractor {
         this.restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(apiBaseUrl)
+                .setConverter(
+                        new GsonConverter(new GsonBuilder().setDateFormat("yyyy-MM-dd").create()))
                 .setClient(createOKHttpClient(context))
                 .build();
     }

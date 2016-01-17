@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.dgimenes.nasapic.model.SpacePic;
+import br.com.dgimenes.nasapic.model.api.FeedDTO;
 import br.com.dgimenes.nasapic.model.api.SpacePicDTO;
 import br.com.dgimenes.nasapic.service.web.NasaPicServerWebservice;
 import retrofit.Callback;
@@ -26,11 +27,11 @@ public class SpacePicInteractor extends RetrofitWithCacheInteractor {
     }
 
     public void getFeed(int page, final OnFinishListener<List<SpacePic>> onFinishListener) {
-        webservice.getFeed(new Callback<List<SpacePicDTO>>() {
+        webservice.getFeed(new Callback<FeedDTO>() {
             @Override
-            public void success(List<SpacePicDTO> spacePicDTOs, Response response) {
+            public void success(FeedDTO feed, Response response) {
                 List<SpacePic> spacePics = new ArrayList<>();
-                for (SpacePicDTO spacePicDTO : spacePicDTOs) {
+                for (SpacePicDTO spacePicDTO : feed.getSpacePics()) {
                     spacePics.add(new SpacePic(spacePicDTO));
                 }
                 onFinishListener.onSuccess(spacePics);

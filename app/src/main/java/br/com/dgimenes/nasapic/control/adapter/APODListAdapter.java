@@ -144,7 +144,7 @@ public class APODListAdapter extends RecyclerView.Adapter<APODListAdapter.ViewHo
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(contextWeak.get(), DetailActivity.class);
-            intent.putExtra(DetailActivity.APOD_OBJECT_PARAM, apod);
+            intent.putExtra(DetailActivity.SPACE_PIC_PARAM, apod);
             contextWeak.get().startActivity(intent);
         }
     }

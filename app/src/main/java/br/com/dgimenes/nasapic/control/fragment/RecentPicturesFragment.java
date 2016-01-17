@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 
 public class RecentPicturesFragment extends Fragment implements SpacePicListAdapter.ErrorListener {
 
-    private static final int LIST_PAGE_SIZE = 5;
     private static final String LOG_TAG = RecentPicturesFragment.class.getName();
 
     @Bind(R.id.recent_pics_recycler_view)
@@ -88,12 +87,14 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
                     recyclerView.setVisibility(View.VISIBLE);
                     listLoadingIndicator.setVisibility(View.GONE);
                 }
+                nextPageToLoad++;
                 releaseLoadingFeed();
             }
 
             @Override
             public void onError(Throwable throwable) {
                 error("Error loading feed (page " + nextPageToLoad + ")");
+                throwable.printStackTrace();
                 releaseLoadingFeed();
             }
 

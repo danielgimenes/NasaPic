@@ -49,11 +49,10 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(mainToolbar);
         tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this);
         tabPager.setAdapter(tabPagerAdapter);
-        int i = 0;
-        tabLayout.addTab(tabLayout.newTab().setText(tabPagerAdapter.getPageTitle(i))
-                .setIcon(tabPagerAdapter.getPageIcon(i++)));
-        tabLayout.addTab(tabLayout.newTab().setText(tabPagerAdapter.getPageTitle(i))
-                .setIcon(tabPagerAdapter.getPageIcon(i++)));
+        for (int i = 0; i < tabPagerAdapter.getCount(); i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(tabPagerAdapter.getPageTitle(i))
+                    .setIcon(tabPagerAdapter.getPageIcon(i++)));
+        }
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(tabPager));
         tabPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
