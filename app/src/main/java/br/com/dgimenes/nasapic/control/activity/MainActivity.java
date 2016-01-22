@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity {
         tabPager.setAdapter(tabPagerAdapter);
         for (int i = 0; i < tabPagerAdapter.getCount(); i++) {
             tabLayout.addTab(tabLayout.newTab().setText(tabPagerAdapter.getPageTitle(i))
-                    .setIcon(tabPagerAdapter.getPageIcon(i++)));
+                    .setIcon(tabPagerAdapter.getPageIcon(i)));
         }
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(tabPager));
         tabPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

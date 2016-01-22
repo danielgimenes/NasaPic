@@ -38,13 +38,13 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
     @Bind(R.id.list_loading_indicator)
     ProgressBar listLoadingIndicator;
 
-    private RecyclerView.Adapter recyclerViewAdapter;
+    protected RecyclerView.Adapter recyclerViewAdapter;
 
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    protected RecyclerView.LayoutManager recyclerViewLayoutManager;
 
-    private List<SpacePic> spacePics;
+    protected List<SpacePic> spacePics;
     protected int nextPageToLoad;
-    private Boolean loadingFeed = false;
+    protected Boolean loadingFeed = false;
 
     @Nullable
     @Override
@@ -57,7 +57,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         return rootView;
     }
 
-    private void setupUI() {
+    protected void setupUI() {
         recyclerView.setHasFixedSize(true);
         recyclerViewLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
@@ -71,7 +71,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         loadFeed();
     }
 
-    private void loadFeed() {
+    protected void loadFeed() {
         synchronized (loadingFeed) {
             if (!loadingFeed) {
                 loadingFeed = true;
@@ -107,7 +107,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         });
     }
 
-    private void setupInfiniteScroll() {
+    protected void setupInfiniteScroll() {
         recyclerView.clearOnScrollListeners();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -133,7 +133,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         Log.d(LOG_TAG, errorMessage);
     }
 
-    public int getDisplayWidth() {
+    protected int getDisplayWidth() {
         Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
         Point size = new Point();

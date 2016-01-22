@@ -9,4 +9,7 @@ public interface NasaPicServerWebservice {
 
     @GET("/feed/list")
     void getFeed(@Query("page") int page, Callback<FeedDTO> callback);
+
+    @GET("/feed/best")
+    void getBest(@Query("page") int page, Callback<FeedDTO> callback);
 }

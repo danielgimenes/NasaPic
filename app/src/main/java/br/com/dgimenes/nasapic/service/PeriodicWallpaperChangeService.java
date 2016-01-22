@@ -122,8 +122,6 @@ public class PeriodicWallpaperChangeService extends JobService {
         return dayOfMonth != currentDayOfMonth;
     }
 
-
-
     @Override
     public boolean onStopJob(JobParameters params) {
         WallpaperChangeNotification.createChangedNotification(this,

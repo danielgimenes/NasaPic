@@ -1,19 +1,49 @@
 package br.com.dgimenes.nasapic.control.fragment;
 
-import br.com.dgimenes.nasapic.exception.NoMoreAPODsToLoadException;
-import br.com.dgimenes.nasapic.service.BestPicturesConfig;
+import android.view.View;
 
-public class BestPicturesFragment extends RecentPicturesFragmentOLD {
+import java.util.List;
 
-    private int dateIndexToLoad = 0;
+import br.com.dgimenes.nasapic.model.SpacePic;
+import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
+
+public class BestPicturesFragment extends RecentPicturesFragment {
 
     @Override
-    protected void advanceNextDateToLoad() throws NoMoreAPODsToLoadException {
-        if (dateIndexToLoad == BestPicturesConfig.bestPicsDates.length) {
-            throw new NoMoreAPODsToLoadException();
+    protected void loadFeed() {
+        synchronized (loadingFeed) {
+            if (!loadingFeed) {
+                loadingFeed = true;
+            }
         }
-        nextDateToLoad = BestPicturesConfig.bestPicsDates[dateIndexToLoad++];
+        SpacePicInteractor spacePicInteractor = new SpacePicInteractor(getActivity());
+        spacePicInteractor.getBest(nextPageToLoad, new OnFinishListener<List<SpacePic>>() {
+            @Override
+            public void onSuccess(List<SpacePic> loadedPics) {
+                spacePics.addAll(loadedPics);
+                recyclerViewAdapter.notifyDataSetChanged();
+                if (recyclerView.getVisibility() == View.GONE) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+                listLoadingIndicator.setVisibility(View.GONE);
+                nextPageToLoad++;
+                releaseLoadingFeed();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                error("Error loading feed (page " + nextPageToLoad + ")");
+                throwable.printStackTrace();
+                releaseLoadingFeed();
+            }
+
+            private void releaseLoadingFeed() {
+                synchronized (loadingFeed) {
+                    loadingFeed = false;
+                    setupInfiniteScroll();
+                }
+            }
+        });
     }
-
-
 }

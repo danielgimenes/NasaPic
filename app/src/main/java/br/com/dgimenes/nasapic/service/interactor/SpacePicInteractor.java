@@ -43,4 +43,22 @@ public class SpacePicInteractor extends RetrofitWithCacheInteractor {
             }
         });
     }
+
+    public void getBest(int page, final OnFinishListener<List<SpacePic>> onFinishListener) {
+        webservice.getBest(page, new Callback<FeedDTO>() {
+            @Override
+            public void success(FeedDTO feed, Response response) {
+                List<SpacePic> spacePics = new ArrayList<>();
+                for (SpacePicDTO spacePicDTO : feed.getSpacePics()) {
+                    spacePics.add(new SpacePic(spacePicDTO));
+                }
+                onFinishListener.onSuccess(spacePics);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                onFinishListener.onError(error);
+            }
+        });
+    }
 }
