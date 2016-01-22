@@ -8,7 +8,7 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
+import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 
 public class UndoWallpaperChangeService extends IntentService {
 
@@ -32,7 +32,7 @@ public class UndoWallpaperChangeService extends IntentService {
         try {
             WallpaperChangeNotification.dismissChangedNotification(this);
             WallpaperChangeNotification.createChangingNotification(this);
-            new ApodInteractor(this).undoLastWallpaperChangeSync();
+            new SpacePicInteractor(this).undoLastWallpaperChangeSync();
             WallpaperChangeNotification.dismissChangingNotification(this);
         } catch (IOException e) {
             e.printStackTrace();

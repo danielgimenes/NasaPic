@@ -3,59 +3,79 @@ package br.com.dgimenes.nasapic.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import br.com.dgimenes.nasapic.model.api.SpacePicDTO;
 
 public class SpacePic implements Parcelable {
-    private String url;
-    private String explanation;
-    private String title;
-    private Date date;
 
-    public SpacePic(SpacePicDTO spacePicDTO) {
-        this.url = spacePicDTO.getUrl();
-        this.explanation = spacePicDTO.getExplanation();
-        this.title = spacePicDTO.getTitle();
-        this.date = spacePicDTO.getDate();
+    private String hdImageUrl;
+
+    private String previewImageUrl;
+
+    private Date originallyPublishedAt;
+
+    private String description;
+
+    private String title;
+
+    private Date publishedAt;
+
+    private String source;
+
+    public SpacePic(String hdImageUrl, String previewImageUrl, Date originallyPublishedAt,
+                    String description, String title, Date publishedAt, String source) {
+        this.hdImageUrl = hdImageUrl;
+        this.previewImageUrl = previewImageUrl;
+        this.originallyPublishedAt = originallyPublishedAt;
+        this.description = description;
+        this.title = title;
+        this.publishedAt = publishedAt;
+        this.source = source;
+    }
+
+    public SpacePic(SpacePicDTO dto) {
+        this.hdImageUrl = dto.getHdImageUrl();
+        this.previewImageUrl = dto.getPreviewImageUrl();
+        this.originallyPublishedAt = dto.getOriginallyPublishedAt();
+        this.description = dto.getDescription();
+        this.title = dto.getTitle();
+        this.publishedAt = dto.getPublishedAt();
+        this.source = dto.getSource();
     }
 
     public SpacePic() {}
 
+    private static final java.lang.String DATEFORMAT = "yyyy-MM-dd";
+
     protected SpacePic(Parcel in) {
-        url = in.readString();
-        explanation = in.readString();
-        title = in.readString();
-        date = new Date(in.readLong());
+        this.hdImageUrl = in.readString();
+        this.previewImageUrl = in.readString();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT);
+            this.originallyPublishedAt = dateFormat.parse(in.readString());
+            this.publishedAt = dateFormat.parse(in.readString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.description = in.readString();
+        this.title = in.readString();
+        this.source = in.readString();
     }
 
-    public static final Parcelable.Creator<APOD> CREATOR = new Parcelable.Creator<APOD>() {
+    public static final Parcelable.Creator<SpacePic> CREATOR = new Parcelable.Creator<SpacePic>() {
         @Override
-        public APOD createFromParcel(Parcel in) {
-            return new APOD(in);
+        public SpacePic createFromParcel(Parcel in) {
+            return new SpacePic(in);
         }
 
         @Override
-        public APOD[] newArray(int size) {
-            return new APOD[size];
+        public SpacePic[] newArray(int size) {
+            return new SpacePic[size];
         }
     };
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getExplanation() {
-        return explanation;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Date getDate() {
-        return date;
-    }
 
     @Override
     public int describeContents() {
@@ -64,41 +84,77 @@ public class SpacePic implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(url);
-        dest.writeString(explanation);
-        dest.writeString(title);
-        dest.writeLong(date.getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT);
+        dest.writeString(this.hdImageUrl);
+        dest.writeString(this.previewImageUrl);
+        dest.writeString(dateFormat.format(this.originallyPublishedAt));
+        dest.writeString(dateFormat.format(this.publishedAt));
+        dest.writeString(this.description);
+        dest.writeString(this.title);
+        dest.writeString(this.source);
     }
 
-    public static class Builder {
-        private final SpacePic instance;
+    public String getHdImageUrl() {
+        return hdImageUrl;
+    }
 
-        public Builder() {
-            instance = new SpacePic();
-        }
+    public void setHdImageUrl(String hdImageUrl) {
+        this.hdImageUrl = hdImageUrl;
+    }
 
-        public Builder url(String url) {
-            instance.url = url;
-            return this;
-        }
+    public String getPreviewImageUrl() {
+        return previewImageUrl;
+    }
 
-        public Builder explanation(String explanation) {
-            instance.explanation = explanation;
-            return this;
-        }
+    public void setPreviewImageUrl(String previewImageUrl) {
+        this.previewImageUrl = previewImageUrl;
+    }
 
-        public Builder title(String title) {
-            instance.title = title;
-            return this;
-        }
+    public Date getOriginallyPublishedAt() {
+        return originallyPublishedAt;
+    }
 
-        public Builder date(Date date) {
-            instance.date = date;
-            return this;
-        }
+    public void setOriginallyPublishedAt(Date originallyPublishedAt) {
+        this.originallyPublishedAt = originallyPublishedAt;
+    }
 
-        public SpacePic build() {
-            return instance;
-        }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(Date publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public static String getDATEFORMAT() {
+        return DATEFORMAT;
+    }
+
+    public static Creator<SpacePic> getCREATOR() {
+        return CREATOR;
     }
 }

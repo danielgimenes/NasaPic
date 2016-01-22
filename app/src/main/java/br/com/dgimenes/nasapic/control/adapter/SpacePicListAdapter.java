@@ -84,11 +84,11 @@ public class SpacePicListAdapter extends RecyclerView.Adapter<SpacePicListAdapte
         viewHolder.loadingIndicator.setVisibility(View.VISIBLE);
         SpacePic spacePic = dataset.get(position);
         viewHolder.dateTextView.setText(
-                DateUtils.friendlyDateString(contextWeak.get(), spacePic.getDate()));
+                DateUtils.friendlyDateString(contextWeak.get(), spacePic.getOriginallyPublishedAt()));
         viewHolder.titleTextView.setText(spacePic.getTitle());
         viewHolder.explanationTextView.setText(
-                StringUtils.addQuotes(spacePic.getExplanation()));
-        viewHolder.apodPreviewImageView.setTag(spacePic.getUrl());
+                StringUtils.addQuotes(spacePic.getDescription()));
+        viewHolder.apodPreviewImageView.setTag(spacePic.getPreviewImageUrl());
         viewHolder.itemView.setOnClickListener(
                 new OnCardClickListener(contextWeak.get(), spacePic));
     }
@@ -145,7 +145,7 @@ public class SpacePicListAdapter extends RecyclerView.Adapter<SpacePicListAdapte
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(contextWeak.get(), DetailActivity.class);
-            intent.putExtra(DetailActivity.APOD_OBJECT_PARAM, spacePic);
+            intent.putExtra(DetailActivity.SPACE_PIC_PARAM, spacePic);
             contextWeak.get().startActivity(intent);
         }
     }

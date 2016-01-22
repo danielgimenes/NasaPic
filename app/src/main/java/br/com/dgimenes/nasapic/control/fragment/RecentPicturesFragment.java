@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
 
 public class RecentPicturesFragment extends Fragment implements SpacePicListAdapter.ErrorListener {
 
-    private static final int LIST_PAGE_SIZE = 5;
     private static final String LOG_TAG = RecentPicturesFragment.class.getName();
 
     @Bind(R.id.recent_pics_recycler_view)
@@ -39,13 +38,13 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
     @Bind(R.id.list_loading_indicator)
     ProgressBar listLoadingIndicator;
 
-    private RecyclerView.Adapter recyclerViewAdapter;
+    protected RecyclerView.Adapter recyclerViewAdapter;
 
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    protected RecyclerView.LayoutManager recyclerViewLayoutManager;
 
-    private List<SpacePic> spacePics;
+    protected List<SpacePic> spacePics;
     protected int nextPageToLoad;
-    private Boolean loadingFeed = false;
+    protected Boolean loadingFeed = false;
 
     @Nullable
     @Override
@@ -58,7 +57,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         return rootView;
     }
 
-    private void setupUI() {
+    protected void setupUI() {
         recyclerView.setHasFixedSize(true);
         recyclerViewLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
@@ -72,7 +71,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         loadFeed();
     }
 
-    private void loadFeed() {
+    protected void loadFeed() {
         synchronized (loadingFeed) {
             if (!loadingFeed) {
                 loadingFeed = true;
@@ -86,14 +85,16 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
                 recyclerViewAdapter.notifyDataSetChanged();
                 if (recyclerView.getVisibility() == View.GONE) {
                     recyclerView.setVisibility(View.VISIBLE);
-                    listLoadingIndicator.setVisibility(View.GONE);
                 }
+                listLoadingIndicator.setVisibility(View.GONE);
+                nextPageToLoad++;
                 releaseLoadingFeed();
             }
 
             @Override
             public void onError(Throwable throwable) {
                 error("Error loading feed (page " + nextPageToLoad + ")");
+                throwable.printStackTrace();
                 releaseLoadingFeed();
             }
 
@@ -106,7 +107,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
         });
     }
 
-    private void setupInfiniteScroll() {
+    protected void setupInfiniteScroll() {
         recyclerView.clearOnScrollListeners();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -116,7 +117,9 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
                     if (!canScrollDown && !loadingFeed) {
                         String loadingMessage =
                                 getResources().getString(R.string.loading_more_apods);
-                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(recyclerView, loadingMessage, Snackbar.LENGTH_LONG).show();
+                        listLoadingIndicator.setVisibility(View.VISIBLE);
+                        listLoadingIndicator.bringToFront();
                         loadFeed();
                     }
                 }
@@ -126,11 +129,11 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
 
     @Override
     public void error(String errorMessage) {
-        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
         Log.d(LOG_TAG, errorMessage);
     }
 
-    public int getDisplayWidth() {
+    protected int getDisplayWidth() {
         Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
         Point size = new Point();
