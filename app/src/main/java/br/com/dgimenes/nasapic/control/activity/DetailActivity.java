@@ -17,8 +17,8 @@ import com.squareup.picasso.Picasso;
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.model.SpacePic;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
-import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 import br.com.dgimenes.nasapic.util.DateUtils;
 import br.com.dgimenes.nasapic.view.LoadingDialog;
 import butterknife.Bind;
@@ -91,7 +91,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingDialog.show();
-                new ApodInteractor(DetailActivity.this).setWallpaper(
+                new SpacePicInteractor(DetailActivity.this).setWallpaper(
                         spacePic.getHdImageUrl(), new OnFinishListener<Void>() {
                     @Override
                     public void onSuccess(Void result) {

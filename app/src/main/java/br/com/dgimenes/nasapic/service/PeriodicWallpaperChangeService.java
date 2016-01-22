@@ -18,8 +18,8 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import br.com.dgimenes.nasapic.R;
-import br.com.dgimenes.nasapic.service.interactor.ApodInteractor;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
+import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class PeriodicWallpaperChangeService extends JobService {
@@ -89,8 +89,7 @@ public class PeriodicWallpaperChangeService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         if (haventTriedChangedToday()) {
-            ApodInteractor apodInteractor = new ApodInteractor(this);
-            apodInteractor.setTodaysApodAsWallpaper(new OnFinishListener<Void>() {
+            new SpacePicInteractor(this).setTodaysApodAsWallpaper(new OnFinishListener<Void>() {
                 @Override
                 public void onSuccess(Void result) {
                     SharedPreferences.Editor editor = PreferenceManager
