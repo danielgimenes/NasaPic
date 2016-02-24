@@ -1,7 +1,6 @@
 package br.com.dgimenes.nasapic.control.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +14,10 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.control.ErrorMessage;
 import br.com.dgimenes.nasapic.model.SpacePic;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
-import br.com.dgimenes.nasapic.service.GlobalLogger;
+import br.com.dgimenes.nasapic.service.EventsLogger;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 import br.com.dgimenes.nasapic.util.DateUtils;
@@ -25,7 +25,7 @@ import br.com.dgimenes.nasapic.view.LoadingDialog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends TrackedActivity {
 
     public static final String SPACE_PIC_PARAM = "SPACE_PIC_PARAM";
 
@@ -97,16 +97,17 @@ public class DetailActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void result) {
                         loadingDialog.dismiss();
-                        String errorMessage = getResources().getString(R.string.success_setting_wallpaper);
-                        GlobalLogger.logEvent("Wallpaper set manually");
-                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                        EventsLogger.logEvent("Wallpaper set manually");
+                        String msg = getResources().getString(R.string.success_setting_wallpaper);
+                        Toast.makeText(DetailActivity.this, msg, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onError(Throwable throwable) {
                         loadingDialog.dismiss();
-                        String errorMessage = getResources().getString(R.string.error_setting_wallpaper);
-                        GlobalLogger.logEvent("Error setting wallpaper set manually");
+                        ErrorMessage error = ErrorMessage.SETTING_WALLPAPER;
+                        EventsLogger.logError(error, throwable);
+                        String errorMessage = getResources().getString(error.userMessageRes);
                         Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });
@@ -125,7 +126,9 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                String errorMessage = getResources().getString(R.string.error_downloading_apod);
+                ErrorMessage error = ErrorMessage.DOWNLOADING_IMAGE;
+                EventsLogger.logError(error, null);
+                String errorMessage = getResources().getString(error.userMessageRes);
                 Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
             }
         });

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.control.ErrorMessage;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 
@@ -92,7 +93,7 @@ public class PeriodicWallpaperChangeService extends JobService {
             new SpacePicInteractor(this).setTodaysApodAsWallpaper(new OnFinishListener<Void>() {
                 @Override
                 public void onSuccess(Void result) {
-                    GlobalLogger.logEvent("Wallpaper set automatically");
+                    EventsLogger.logEvent("Wallpaper set automatically");
                     SharedPreferences.Editor editor = PreferenceManager
                             .getDefaultSharedPreferences(PeriodicWallpaperChangeService.this)
                             .edit();
@@ -103,9 +104,10 @@ public class PeriodicWallpaperChangeService extends JobService {
 
                 @Override
                 public void onError(Throwable throwable) {
-                    GlobalLogger.logEvent("Error setting wallpaper set automatically");
+                    ErrorMessage error = ErrorMessage.SETTING_WALLPAPER_AUTO;
+                    EventsLogger.logError(error, throwable);
                     String errorMessage = PeriodicWallpaperChangeService.this.getResources()
-                            .getString(R.string.periodic_change_error);
+                            .getString(error.userMessageRes);
                     WallpaperChangeNotification.createChangedNotification(
                             PeriodicWallpaperChangeService.this, errorMessage);
                 }

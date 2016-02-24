@@ -129,8 +129,7 @@ public class SpacePicListAdapter extends RecyclerView.Adapter<SpacePicListAdapte
         }
 
         @Override
-        public void onError() {
-        }
+        public void onError() {}
     }
 
     private class OnCardClickListener implements View.OnClickListener {

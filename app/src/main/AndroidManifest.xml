@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -55,6 +56,10 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="79d97d9ed31d18926f23ca8418da12b28f96718e" />
+
+        <meta-data
+            android:name="flurry.ApiKey"
+            android:value="G5JWS8QR4YXQGSKS9NW7" />
 
     </application>
 

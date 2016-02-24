@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import br.com.dgimenes.nasapic.R;
+import br.com.dgimenes.nasapic.control.ErrorMessage;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 
 public class UndoWallpaperChangeService extends IntentService {
@@ -34,13 +34,13 @@ public class UndoWallpaperChangeService extends IntentService {
             WallpaperChangeNotification.createChangingNotification(this);
             new SpacePicInteractor(this).undoLastWallpaperChangeSync();
             WallpaperChangeNotification.dismissChangingNotification(this);
-            GlobalLogger.logEvent("Undid wallpaper change");
+            EventsLogger.logEvent("Undid wallpaper change");
         } catch (IOException e) {
-            GlobalLogger.logEvent("Error undoing wallpaper change");
-            e.printStackTrace();
-            String undoErrorMessage = getResources().getString(R.string.undo_error_message);
-            Log.e(LOG_TAG, undoErrorMessage);
-            Toast.makeText(this, undoErrorMessage, Toast.LENGTH_SHORT).show();
+            ErrorMessage error = ErrorMessage.UNDOING_WALLPAPER_CHANGE;
+            EventsLogger.logError(error, e);
+            String errorMessage = getResources().getString(error.userMessageRes);
+            Log.e(LOG_TAG, errorMessage);
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
     }
 }

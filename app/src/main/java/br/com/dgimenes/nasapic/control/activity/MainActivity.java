@@ -5,23 +5,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
 import br.com.dgimenes.nasapic.service.PeriodicWallpaperChangeService;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.fabric.sdk.android.Fabric;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends TrackedActivity {
 
     @Bind(R.id.tab_pager)
     ViewPager tabPager;
@@ -37,7 +32,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics(), new Answers());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();

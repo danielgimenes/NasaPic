@@ -3,7 +3,6 @@ package br.com.dgimenes.nasapic.control.activity;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.LinearLayout;
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.service.PeriodicWallpaperChangeService;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends TrackedActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

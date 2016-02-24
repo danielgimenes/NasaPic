@@ -4,8 +4,9 @@ import android.view.View;
 
 import java.util.List;
 
+import br.com.dgimenes.nasapic.control.ErrorMessage;
 import br.com.dgimenes.nasapic.model.SpacePic;
-import br.com.dgimenes.nasapic.service.GlobalLogger;
+import br.com.dgimenes.nasapic.service.EventsLogger;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 
@@ -29,15 +30,15 @@ public class BestPicturesFragment extends RecentPicturesFragment {
                 }
                 listLoadingIndicator.setVisibility(View.GONE);
                 nextPageToLoad++;
-                GlobalLogger.logEvent("Best pictures loaded");
+                EventsLogger.logEvent("Best pictures loaded");
                 releaseLoadingFeed();
             }
 
             @Override
             public void onError(Throwable throwable) {
-                error("Error loading feed (page " + nextPageToLoad + ")");
-                throwable.printStackTrace();
-                GlobalLogger.logEvent("Error loading recent pictures");
+                ErrorMessage error = ErrorMessage.LOADING_BEST_PICS;
+                EventsLogger.logError(error, throwable);
+                error(getResources().getString(error.userMessageRes));
                 releaseLoadingFeed();
             }
 

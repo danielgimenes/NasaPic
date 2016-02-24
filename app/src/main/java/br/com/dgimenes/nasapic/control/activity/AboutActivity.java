@@ -1,7 +1,6 @@
 package br.com.dgimenes.nasapic.control.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -11,7 +10,7 @@ import br.com.dgimenes.nasapic.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends TrackedActivity {
 
     @Bind(R.id.version)
     TextView versionTextView;
@@ -32,10 +31,6 @@ public class AboutActivity extends AppCompatActivity {
                 getResources().getString(R.string.version) + " " + BuildConfig.VERSION_NAME +
                 " (" + (BuildConfig.VERSION_CODE) + ")";
         versionTextView.setText(versionText);
-
-//        String labelText = getResources().getString(R.string.about_message);
-        //Spannable spannable = URLSpanNoUnderline.removeUrlUnderline(Html.fromHtml(labelText));
-        //titleTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
