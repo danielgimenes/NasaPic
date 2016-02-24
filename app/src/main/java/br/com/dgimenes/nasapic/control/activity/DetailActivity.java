@@ -18,6 +18,7 @@ import br.com.dgimenes.nasapic.control.ErrorMessage;
 import br.com.dgimenes.nasapic.model.SpacePic;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
 import br.com.dgimenes.nasapic.service.EventsLogger;
+import br.com.dgimenes.nasapic.service.WallpaperChangeNotification;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 import br.com.dgimenes.nasapic.util.DateUtils;
@@ -88,11 +89,14 @@ public class DetailActivity extends TrackedActivity {
             @Override
             public void onClick(View v) {
                 loadingDialog.show();
+                WallpaperChangeNotification.createChangingNotification(DetailActivity.this);
                 new SpacePicInteractor(DetailActivity.this).setWallpaper(
                         spacePic.getHdImageUrl(), new OnFinishListener<Void>() {
                             @Override
                             public void onSuccess(Void result) {
                                 loadingDialog.dismiss();
+                                WallpaperChangeNotification
+                                        .dismissChangingNotification(DetailActivity.this);
                                 EventsLogger.logEvent("Wallpaper set manually");
                                 String msg = getResources().getString(R.string.success_setting_wallpaper);
                                 Toast.makeText(DetailActivity.this, msg, Toast.LENGTH_LONG).show();
@@ -101,6 +105,8 @@ public class DetailActivity extends TrackedActivity {
                             @Override
                             public void onError(Throwable throwable) {
                                 loadingDialog.dismiss();
+                                WallpaperChangeNotification
+                                        .dismissChangingNotification(DetailActivity.this);
                                 ErrorMessage error = ErrorMessage.SETTING_WALLPAPER;
                                 EventsLogger.logError(error, throwable);
                                 String errorMessage = getResources().getString(error.userMessageRes);
