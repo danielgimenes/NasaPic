@@ -31,7 +31,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class SpacePicInteractor extends RetrofitWithCacheInteractor {
-    private static String NASAPICSERVER_BASEURL = "http://nasapicserver.dgimenes.info:8080";
+    private static String NASAPICSERVER_BASEURL = "http://nasapicserver.dgimenes.com:8080";
     private static final String LAST_WALLPAPER_FILE_NAME = "last_wallpaper";
     private final NasaPicServerWebservice webservice;
 
