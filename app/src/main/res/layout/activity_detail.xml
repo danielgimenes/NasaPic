@@ -31,15 +31,12 @@
 
     <Button
         android:id="@+id/open_explanation_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="44dp"
         android:layout_alignParentRight="true"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:layout_above="@+id/explanation"
         android:background="#88000000"
-        android:textColor="#FFF"
-        android:text="@string/open_description_button" />
+        android:drawableRight="@drawable/ic_info_outline_white_36dp"/>
 
     <TextView
         android:id="@id/explanation"
@@ -49,9 +46,8 @@
         android:layout_above="@+id/set_wallpaper_button"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
-        android:paddingTop="8dp"
         android:textColor="#FFF"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:visibility="gone" />
 
     <Button

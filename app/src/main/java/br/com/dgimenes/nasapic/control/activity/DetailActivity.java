@@ -71,19 +71,15 @@ public class DetailActivity extends TrackedActivity {
         loadingDialog = new LoadingDialog(this);
         explanationTextView.setText(
                 DateUtils.friendlyDateString(this, spacePic.getOriginallyPublishedAt()) + " - \"" +
-                    spacePic.getDescription() + "\" " + getResources().getString(R.string.text_origin));
+                        spacePic.getDescription() + "\" " + getResources().getString(R.string.text_origin));
 
         openExplanationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (explanationTextView.getVisibility() == View.GONE) {
-                    explanationTextView.setVisibility(View.VISIBLE);
-                    openExplanationButton.setText(
-                            getResources().getString(R.string.close_description_button));
+                    showExplanation();
                 } else {
-                    explanationTextView.setVisibility(View.GONE);
-                    openExplanationButton.setText(
-                            getResources().getString(R.string.open_description_button));
+                    hideExplanation();
                 }
             }
         });
@@ -94,23 +90,23 @@ public class DetailActivity extends TrackedActivity {
                 loadingDialog.show();
                 new SpacePicInteractor(DetailActivity.this).setWallpaper(
                         spacePic.getHdImageUrl(), new OnFinishListener<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        loadingDialog.dismiss();
-                        EventsLogger.logEvent("Wallpaper set manually");
-                        String msg = getResources().getString(R.string.success_setting_wallpaper);
-                        Toast.makeText(DetailActivity.this, msg, Toast.LENGTH_LONG).show();
-                    }
+                            @Override
+                            public void onSuccess(Void result) {
+                                loadingDialog.dismiss();
+                                EventsLogger.logEvent("Wallpaper set manually");
+                                String msg = getResources().getString(R.string.success_setting_wallpaper);
+                                Toast.makeText(DetailActivity.this, msg, Toast.LENGTH_LONG).show();
+                            }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        loadingDialog.dismiss();
-                        ErrorMessage error = ErrorMessage.SETTING_WALLPAPER;
-                        EventsLogger.logError(error, throwable);
-                        String errorMessage = getResources().getString(error.userMessageRes);
-                        Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
-                    }
-                });
+                            @Override
+                            public void onError(Throwable throwable) {
+                                loadingDialog.dismiss();
+                                ErrorMessage error = ErrorMessage.SETTING_WALLPAPER;
+                                EventsLogger.logError(error, throwable);
+                                String errorMessage = getResources().getString(error.userMessageRes);
+                                Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         });
     }
@@ -142,5 +138,17 @@ public class DetailActivity extends TrackedActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hideExplanation() {
+        explanationTextView.setVisibility(View.GONE);
+        openExplanationButton.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0, R.drawable.ic_info_outline_white_36dp, 0);
+    }
+
+    private void showExplanation() {
+        explanationTextView.setVisibility(View.VISIBLE);
+        openExplanationButton.setCompoundDrawablesWithIntrinsicBounds(
+                0, 0, R.drawable.ic_highlight_off_white_36dp, 0);
     }
 }

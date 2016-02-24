@@ -163,7 +163,7 @@ public class SpacePicInteractor extends RetrofitWithCacheInteractor {
                 int ideal_height = params[0];
                 try {
                     return DefaultPicasso.get(contextWeakReference.get(), null).load(pictureUrl)
-                            .placeholder(R.drawable.loading).resize(0, ideal_height).get();
+                            .resize(0, ideal_height).get();
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;

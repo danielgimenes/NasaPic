@@ -52,7 +52,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     public Drawable getPageIcon(int position) {
         switch (position) {
             case 0:
-                return context.getResources().getDrawable(R.drawable.ic_recent_tab);
+                return context.getResources().getDrawable(R.drawable.ic_today_white_24dp);
             case 1:
                 return context.getResources().getDrawable(R.drawable.ic_best_pics_tab);
         }

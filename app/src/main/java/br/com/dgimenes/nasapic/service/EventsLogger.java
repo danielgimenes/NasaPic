@@ -31,6 +31,7 @@ public class EventsLogger {
                 Bundle bundle = ai.metaData;
                 String flurryApiKey = bundle.getString("flurry.ApiKey");
                 FlurryAgent.setLogEnabled(false);
+                FlurryAgent.setContinueSessionMillis(30000);
                 FlurryAgent.init(context, flurryApiKey);
             } catch (Exception e) {
                 Crashlytics.logException(e);
