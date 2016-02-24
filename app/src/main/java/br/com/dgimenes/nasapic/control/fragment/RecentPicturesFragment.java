@@ -23,6 +23,7 @@ import java.util.List;
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.SpacePicListAdapter;
 import br.com.dgimenes.nasapic.model.SpacePic;
+import br.com.dgimenes.nasapic.service.GlobalLogger;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 import butterknife.Bind;
@@ -88,6 +89,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
                 }
                 listLoadingIndicator.setVisibility(View.GONE);
                 nextPageToLoad++;
+                GlobalLogger.logEvent("Recent pictures loaded");
                 releaseLoadingFeed();
             }
 
@@ -95,6 +97,7 @@ public class RecentPicturesFragment extends Fragment implements SpacePicListAdap
             public void onError(Throwable throwable) {
                 error("Error loading feed (page " + nextPageToLoad + ")");
                 throwable.printStackTrace();
+                GlobalLogger.logEvent("Error loading recent pictures");
                 releaseLoadingFeed();
             }
 

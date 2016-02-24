@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.model.SpacePic;
 import br.com.dgimenes.nasapic.service.DefaultPicasso;
+import br.com.dgimenes.nasapic.service.GlobalLogger;
 import br.com.dgimenes.nasapic.service.interactor.OnFinishListener;
 import br.com.dgimenes.nasapic.service.interactor.SpacePicInteractor;
 import br.com.dgimenes.nasapic.util.DateUtils;
@@ -97,6 +98,7 @@ public class DetailActivity extends AppCompatActivity {
                     public void onSuccess(Void result) {
                         loadingDialog.dismiss();
                         String errorMessage = getResources().getString(R.string.success_setting_wallpaper);
+                        GlobalLogger.logEvent("Wallpaper set manually");
                         Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
 
@@ -104,6 +106,7 @@ public class DetailActivity extends AppCompatActivity {
                     public void onError(Throwable throwable) {
                         loadingDialog.dismiss();
                         String errorMessage = getResources().getString(R.string.error_setting_wallpaper);
+                        GlobalLogger.logEvent("Error setting wallpaper set manually");
                         Toast.makeText(DetailActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     }
                 });

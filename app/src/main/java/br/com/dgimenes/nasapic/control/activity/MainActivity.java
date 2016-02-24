@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
 
 import br.com.dgimenes.nasapic.R;
 import br.com.dgimenes.nasapic.control.adapter.TabPagerAdapter;
@@ -36,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics(), new Answers());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupUI();

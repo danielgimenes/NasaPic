@@ -34,7 +34,9 @@ public class UndoWallpaperChangeService extends IntentService {
             WallpaperChangeNotification.createChangingNotification(this);
             new SpacePicInteractor(this).undoLastWallpaperChangeSync();
             WallpaperChangeNotification.dismissChangingNotification(this);
+            GlobalLogger.logEvent("Undid wallpaper change");
         } catch (IOException e) {
+            GlobalLogger.logEvent("Error undoing wallpaper change");
             e.printStackTrace();
             String undoErrorMessage = getResources().getString(R.string.undo_error_message);
             Log.e(LOG_TAG, undoErrorMessage);

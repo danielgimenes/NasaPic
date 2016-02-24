@@ -92,6 +92,7 @@ public class PeriodicWallpaperChangeService extends JobService {
             new SpacePicInteractor(this).setTodaysApodAsWallpaper(new OnFinishListener<Void>() {
                 @Override
                 public void onSuccess(Void result) {
+                    GlobalLogger.logEvent("Wallpaper set automatically");
                     SharedPreferences.Editor editor = PreferenceManager
                             .getDefaultSharedPreferences(PeriodicWallpaperChangeService.this)
                             .edit();
@@ -102,6 +103,7 @@ public class PeriodicWallpaperChangeService extends JobService {
 
                 @Override
                 public void onError(Throwable throwable) {
+                    GlobalLogger.logEvent("Error setting wallpaper set automatically");
                     String errorMessage = PeriodicWallpaperChangeService.this.getResources()
                             .getString(R.string.periodic_change_error);
                     WallpaperChangeNotification.createChangedNotification(
