@@ -22,6 +22,7 @@ public class UndoWallpaperChangeService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        EventsLogger.initialize(this);
         boolean undoOperation = intent.getExtras().getBoolean(UNDO_OPERATION_EXTRA, false);
         if (undoOperation) {
             undoLastWallpaperChange();

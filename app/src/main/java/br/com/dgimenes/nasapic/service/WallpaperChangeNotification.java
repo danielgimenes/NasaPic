@@ -59,7 +59,8 @@ public class WallpaperChangeNotification {
                     .setContentIntent(contentPendingIntent)
                     .addAction(R.drawable.ic_undo_change, undoChangeButtonTitle,
                             undoChangePendingIntent)
-                    .addAction(R.drawable.ic_settings, settingsButtonTitle, settingsPendingIntent)
+                    .addAction(R.drawable.ic_settings_white_24dp, settingsButtonTitle,
+                            settingsPendingIntent)
                     .build();
             getNotificationManager(context).notify(WALLPAPER_CHANGED_NOTIFICATION_ID, notification);
         }

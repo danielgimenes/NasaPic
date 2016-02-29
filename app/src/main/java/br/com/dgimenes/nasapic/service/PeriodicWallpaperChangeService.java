@@ -89,6 +89,7 @@ public class PeriodicWallpaperChangeService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        EventsLogger.initialize(this);
         if (haventTriedChangedToday()) {
             new SpacePicInteractor(this).setTodaysApodAsWallpaper(new OnFinishListener<Void>() {
                 @Override
